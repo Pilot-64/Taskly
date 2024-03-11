@@ -5,7 +5,7 @@ import { app } from "electron";
 import dayjs from "dayjs";
 import { writeFileSync } from "node:fs";
 
-export default class Logs {
+class Logs {
   private logger!: Logger;
 
   /**
@@ -114,7 +114,7 @@ export default class Logs {
   /**
    * Log a fatal error, these errors should cause the program to crash
    * and this should be the final log message.
-   * This will automatically shutdown the logger as well.
+   * This will automatically shutdown the logger and program as well.
    * @param error The error getting logged.
    * @param message A nice message to go along with it.
    */
@@ -137,5 +137,9 @@ export default class Logs {
         error.stack ? error.stack : "No stacktrace provided!"
       }`
     );
+
+    app.quit();
   }
-}
+};
+
+export const log = new Logs();

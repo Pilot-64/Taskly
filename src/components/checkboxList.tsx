@@ -1,14 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 function checkboxList() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
 
-  window.Main.LoadTasks().then((loadedTasks) => {
-    if (loadedTasks == null) return;
-    setTasks(loadedTasks);
-  });
+  useEffect(() => {
+    window.Main.LoadTasks().then((loadedTasks) => {
+      if (loadedTasks == null) return;
+      setTasks(loadedTasks);
+      window.Main.LogInfo("Loaded tasks from file successfully!");
+
+      return () => window.Main.SaveTasks(tasks);
+    });
+  }, []);
 
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
