@@ -29,17 +29,6 @@ const api = {
   },
   Close: () => {
     ipcRenderer.send("close");
-  },
-  /**
-   * Provide an easier way to listen to events
-   */
-  on: (channel: string, callback: (data: any) => void) => {
-    ipcRenderer.on(channel, (_, data) => callback(data));
   }
 };
 contextBridge.exposeInMainWorld("Main", api);
-/**
- * Using the ipcRenderer directly in the browser through the contextBridge ist not really secure.
- * I advise using the Main/api way !!
- */
-contextBridge.exposeInMainWorld("ipcRenderer", ipcRenderer);

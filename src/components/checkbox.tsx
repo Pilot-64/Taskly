@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { IoPencil, IoTrashBin } from "react-icons/io5";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React from "react";
+import { useState } from "react";
 
 interface CustomCheckboxProps {
-  label: string; // Add a prop for the label
+  label: string;
 }
 
 function CustomCheckbox({ label }: CustomCheckboxProps) {
