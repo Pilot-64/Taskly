@@ -3,6 +3,7 @@ import { BrowserWindow, IpcMainEvent, app, ipcMain } from "electron";
 import isDev from "electron-is-dev";
 import { existsSync, mkdirSync } from "node:fs";
 import { loadTasks, saveTasks } from "./ipcHandler";
+import Logger from "./logger";
 
 //* Useful variables
 const height = 600;
@@ -49,7 +50,7 @@ const dataPath = isDev ? __dirname : app.getPath("userData");
 const userDataPath = join(dataPath, "data");
 const sessionDataPath = join(dataPath, "session");
 const logPath = join(dataPath, "logs");
-const crashDumpPath = join(dataPath, "crash-reports");
+const crashDumpPath = join(dataPath, "crash-dumps");
 
 if (!existsSync(dataPath)) mkdirSync(dataPath);
 if (!existsSync(userDataPath)) mkdirSync(userDataPath);
@@ -62,11 +63,16 @@ app.setPath("sessionData", sessionDataPath);
 app.setPath("logs", logPath);
 app.setPath("crashDumps", crashDumpPath);
 
+//* Define and export logger
+export const log = new Logger();
+log.debug("Remapped directories from default to desired ones.");
+
 //* Register common app events
 app.whenReady().then(() => {
   //* Handle 2 way ipc
   ipcMain.handle("load-tasks", loadTasks);
 
+  //* Create window
   createWindow();
 
   app.on("activate", () => {
