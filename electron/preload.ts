@@ -1,4 +1,4 @@
-import { ipcRenderer, contextBridge } from 'electron';
+import { ipcRenderer, contextBridge } from "electron";
 
 declare global {
   interface Window {
@@ -16,19 +16,19 @@ const api = {
    * The function below can accessed using `window.Main.sayHello`
    */
   sendMessage: (message: string) => {
-    ipcRenderer.send('message', message);
+    ipcRenderer.send("message", message);
   },
   /**
     Here function for AppBar
    */
   Minimize: () => {
-    ipcRenderer.send('minimize');
+    ipcRenderer.send("minimize");
   },
   Maximize: () => {
-    ipcRenderer.send('maximize');
+    ipcRenderer.send("maximize");
   },
   Close: () => {
-    ipcRenderer.send('close');
+    ipcRenderer.send("close");
   },
   /**
    * Provide an easier way to listen to events
@@ -37,9 +37,9 @@ const api = {
     ipcRenderer.on(channel, (_, data) => callback(data));
   }
 };
-contextBridge.exposeInMainWorld('Main', api);
+contextBridge.exposeInMainWorld("Main", api);
 /**
  * Using the ipcRenderer directly in the browser through the contextBridge ist not really secure.
  * I advise using the Main/api way !!
  */
-contextBridge.exposeInMainWorld('ipcRenderer', ipcRenderer);
+contextBridge.exposeInMainWorld("ipcRenderer", ipcRenderer);

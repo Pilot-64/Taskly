@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { IoPencil, IoTrashBin } from 'react-icons/io5';
+import React, { useState } from "react";
+import { IoPencil, IoTrashBin } from "react-icons/io5";
 
 interface CustomCheckboxProps {
   label: string; // Add a prop for the label
@@ -22,7 +22,9 @@ function CustomCheckbox({ label }: CustomCheckboxProps) {
           checked={isChecked}
           onChange={() => {}}
         />
-        <label className={`text-gray-700 ${isChecked ? 'line-through' : ''}`}>{label}</label>
+        <label className={`text-gray-700 ${isChecked ? "line-through" : ""}`}>
+          {label}
+        </label>
       </div>
     </div>
   );
