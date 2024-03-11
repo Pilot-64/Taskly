@@ -18,9 +18,7 @@ const api = {
   SaveTasks: (tasks: Tasks[]) => {
     ipcRenderer.send("save-tasks", tasks);
   },
-  LoadTasks: () => {
-    ipcRenderer.invoke("load-tasks");
-  }
+  LoadTasks: () => ipcRenderer.invoke("load-tasks") as Promise<Tasks[]|null>,
 };
 
 contextBridge.exposeInMainWorld("Main", api);

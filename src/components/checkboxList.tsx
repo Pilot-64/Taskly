@@ -5,6 +5,11 @@ import { useState } from "react";
 function checkboxList() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
 
+  window.Main.LoadTasks().then((loadedTasks) => {
+    if (loadedTasks == null) return;
+    setTasks(loadedTasks)
+  });
+
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
