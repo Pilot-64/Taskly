@@ -1,14 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 function checkboxList() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
 
-  window.Main.LoadTasks().then((loadedTasks) => {
-    if (loadedTasks == null) return;
-    setTasks(loadedTasks)
-  });
+  useEffect(() => {
+    window.Main.LoadTasks().then((loadedTasks) => {
+      if (loadedTasks == null) return;
+      setTasks(loadedTasks);
+      window.Main.LogInfo("Loaded tasks from file successfully!");
+
+      return () => window.Main.SaveTasks(tasks);
+    });
+  }, []);
 
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
@@ -46,7 +51,10 @@ function checkboxList() {
       <ul>
         {tasks.map((task: Tasks) => {
           return (
-            <div className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50">
+            <div
+              key={task.id}
+              className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50"
+            >
               <div
                 onClick={() => handleCheckboxClick(task.id)}
                 className="w-full flex flex-row items-center p-1 cursor-pointer"
