@@ -51,6 +51,7 @@ function checkboxList() {
       <ul>
         {tasks.map((task: Tasks) => {
           return (
+            // eslint-disable-next-line react/jsx-key
             <div
               key={task.id}
               className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50"
