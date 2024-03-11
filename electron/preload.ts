@@ -5,30 +5,19 @@ declare global {
     Main: typeof api;
     ipcRenderer: typeof ipcRenderer;
   }
+
+  interface Tasks {
+    id: string;
+    title: string;
+    completed: boolean;
+  }
 }
 
+// Declare an API for the front end to use
 const api = {
-  /**
-   * Here you can expose functions to the renderer process
-   * so they can interact with the main (electron) side
-   * without security problems.
-   *
-   * The function below can accessed using `window.Main.sayHello`
-   */
-  sendMessage: (message: string) => {
-    ipcRenderer.send("message", message);
-  },
-  /**
-    Here function for AppBar
-   */
-  Minimize: () => {
-    ipcRenderer.send("minimize");
-  },
-  Maximize: () => {
-    ipcRenderer.send("maximize");
-  },
-  Close: () => {
-    ipcRenderer.send("close");
+  SaveTasks: (tasks: Tasks[]) => {
+    ipcRenderer.send("save-tasks", tasks);
   }
 };
+
 contextBridge.exposeInMainWorld("Main", api);
