@@ -58,10 +58,10 @@ function App() {
 
         <ul>
           {checkboxes.map((checkbox: React.ReactNode) => {
-            const key = Math.random();
+            const key = Math.random().toString();
 
             return (
-              <li className="space-y-2">
+              <li key={key} className="space-y-2">
                 <input
                   type="radio"
                   id={key}
@@ -74,7 +74,7 @@ function App() {
                   htmlFor={key}
                   className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50"
                 >
-                  <div key={checkbox.key}>{checkbox}</div>
+                  <div>{checkbox}</div>
                 </label>
               </li>
             );
