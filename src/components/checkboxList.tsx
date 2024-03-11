@@ -16,18 +16,24 @@ function checkboxList() {
           title: inputValue,
           completed: false
         };
-        setTasks((prevTasks) => [...prevTasks, newTask]);
+        setTasks((prevTasks) => {
+          const newTasks = [...prevTasks, newTask];
+          window.Main.SaveTasks(newTasks);
+          return newTasks;
+        });
         event.currentTarget.value = "";
       }
     }
   };
 
   const handleCheckboxClick = (id: string) => {
-    setTasks(prevData =>
-      prevData.map(item =>
+    setTasks((prevTasks) => {
+      const newTasks = prevTasks.map((item) =>
         item.id == id ? { ...item, completed: !item.completed } : item
-      )
-    );
+      );
+      window.Main.SaveTasks(newTasks);
+      return newTasks;
+    });
   };
 
   return (
@@ -41,14 +47,15 @@ function checkboxList() {
                 className="w-full flex flex-row items-center p-1 cursor-pointer"
               >
                 <input
-                  id="checkbox-1"
+                  id={task.id}
                   type="checkbox"
                   className="bg-white border-green-300 focus:ring-3 focus:ring-green-300 h-full mx-1 rounded-full cursor-pointer"
                   checked={task.completed}
                   onChange={() => {}}
                 />
                 <label
-                  htmlFor="checkbox-1"
+                  htmlFor={task.id}
+                  onClick={() => handleCheckboxClick(task.id)}
                   className={`text-gray-700 cursor-pointer ${task.completed ? "line-through" : ""}`}
                 >
                   {task.title}

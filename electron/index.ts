@@ -2,7 +2,7 @@ import { join } from "node:path";
 import { BrowserWindow, IpcMainEvent, app, ipcMain } from "electron";
 import isDev from "electron-is-dev";
 import { existsSync, mkdirSync } from "node:fs";
-import { saveTasks } from "./ipcHandler";
+import { loadTasks, saveTasks } from "./ipcHandler";
 
 //* Useful variables
 const height = 600;
@@ -39,13 +39,13 @@ function createWindow() {
   }
 
   // Register ipcMain API events to function
-  ipcMain.on("save-tasks", (event: IpcMainEvent, tasks: Tasks[]) =>
-    saveTasks(event, tasks)
+  ipcMain.on("save-tasks", (_event: IpcMainEvent, tasks: Tasks[]) =>
+    saveTasks(tasks)
   );
 }
 
 //* Setup directories for storing app data
-const dataPath = app.getPath("userData");
+const dataPath = isDev ? __dirname : app.getPath("userData");
 const userDataPath = join(dataPath, "data");
 const sessionDataPath = join(dataPath, "session");
 const logPath = join(dataPath, "logs");
@@ -64,6 +64,9 @@ app.setPath("crashDumps", crashDumpPath);
 
 //* Register common app events
 app.whenReady().then(() => {
+  //* Handle 2 way ipc
+  ipcMain.handle("load-tasks", loadTasks);
+
   createWindow();
 
   app.on("activate", () => {

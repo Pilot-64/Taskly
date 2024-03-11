@@ -17,6 +17,9 @@ declare global {
 const api = {
   SaveTasks: (tasks: Tasks[]) => {
     ipcRenderer.send("save-tasks", tasks);
+  },
+  LoadTasks: () => {
+    ipcRenderer.invoke("load-tasks");
   }
 };
 
