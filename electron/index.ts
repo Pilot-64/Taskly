@@ -6,7 +6,7 @@ import { loadTasks, saveTasks } from "./ipcHandler";
 import { log } from "./logger";
 
 //* Useful variables
-const height = 600;
+const height = 475;
 const width = 800;
 
 //* Setup directories for storing app data
@@ -32,7 +32,7 @@ log.debug("Remapped directories from default to desired ones.");
 function createWindow() {
   // Create the browser window.
   const window = new BrowserWindow({
-    width,
+    width: isDev ? width + 400 : width,
     height,
     minWidth: width,
     minHeight: height,
@@ -44,6 +44,7 @@ function createWindow() {
       preload: join(__dirname, "preload.js")
     }
   });
+  window.removeMenu();
 
   const port = process.env.PORT || 3000;
   const url = isDev
