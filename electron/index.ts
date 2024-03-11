@@ -1,20 +1,21 @@
-// Native
-import { join } from "path";
-
-// Packages
-import { BrowserWindow, app, ipcMain } from "electron";
+import { join } from "node:path";
+import { BrowserWindow, IpcMainEvent, app, ipcMain } from "electron";
 import isDev from "electron-is-dev";
+import { existsSync, mkdirSync } from "node:fs";
+import { loadTasks, saveTasks } from "./ipcHandler";
 
+//* Useful variables
 const height = 600;
 const width = 800;
 
+//* Create window
 function createWindow() {
   // Create the browser window.
   const window = new BrowserWindow({
     width,
     height,
-    minWidth: 700,
-    minHeight: 500,
+    minWidth: width,
+    minHeight: height,
     frame: true,
     show: true,
     resizable: true,
@@ -29,47 +30,54 @@ function createWindow() {
     ? `http://localhost:${port}`
     : join(__dirname, "../src/out/index.html");
 
-  // and load the index.html of the app.
+  // Load the index.html of the app.
   if (isDev) {
     window?.loadURL(url);
+    window.webContents.openDevTools();
   } else {
     window?.loadFile(url);
   }
-  // Open the DevTools.
-  window.webContents.openDevTools();
 
-  // For AppBar
-  ipcMain.on("minimize", () => {
-    // eslint-disable-next-line no-unused-expressions
-    window.isMinimized() ? window.restore() : window.minimize();
-    // or alternatively: win.isVisible() ? win.hide() : win.show()
-  });
-  ipcMain.on("maximize", () => {
-    // eslint-disable-next-line no-unused-expressions
-    window.isMaximized() ? window.restore() : window.maximize();
-  });
-
-  ipcMain.on("close", () => {
-    window.close();
-  });
+  // Register ipcMain API events to function
+  ipcMain.on("save-tasks", (_event: IpcMainEvent, tasks: Tasks[]) =>
+    saveTasks(tasks)
+  );
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+//* Setup directories for storing app data
+const dataPath = isDev ? __dirname : app.getPath("userData");
+const userDataPath = join(dataPath, "data");
+const sessionDataPath = join(dataPath, "session");
+const logPath = join(dataPath, "logs");
+const crashDumpPath = join(dataPath, "crash-reports");
+
+if (!existsSync(dataPath)) mkdirSync(dataPath);
+if (!existsSync(userDataPath)) mkdirSync(userDataPath);
+if (!existsSync(sessionDataPath)) mkdirSync(sessionDataPath);
+if (!existsSync(logPath)) mkdirSync(logPath);
+if (!existsSync(crashDumpPath)) mkdirSync(crashDumpPath);
+
+app.setPath("userData", userDataPath);
+app.setPath("sessionData", sessionDataPath);
+app.setPath("logs", logPath);
+app.setPath("crashDumps", crashDumpPath);
+
+//* Register common app events
 app.whenReady().then(() => {
+  //* Handle 2 way ipc
+  ipcMain.handle("load-tasks", loadTasks);
+
   createWindow();
 
   app.on("activate", () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (
+      process.platform == "darwin" &&
+      BrowserWindow.getAllWindows().length == 0
+    )
+      createWindow();
   });
 });
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+  if (process.platform != "darwin") app.quit();
 });
