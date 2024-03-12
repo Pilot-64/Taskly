@@ -12,8 +12,8 @@ function Home() {
   };
 
   return (
-    <div className="bg-white col-span-2 h-full w-full p-5 flex flex-col space-y-2">
-      <div className="flex sticky top-5 flex-row space-x-5 items-center select-none p-1 bg-white bg-opacity-70">
+    <div className="bg-white col-span-2 h-full w-full flex flex-col space-y-2">
+      <div className="flex sticky top-0 flex-row space-x-5 p-5 items-center select-none bg-white bg-opacity-90">
         <h1 className="text-3xl font-bold">Home</h1>
         <div className="h-full w-px bg-gray-300" />
         <div className="flex flex-row items-center space-x-2">
@@ -27,7 +27,9 @@ function Home() {
           </button>
         </div>
       </div>
-      <CheckboxList key={listKey} />
+      <div className="px-5">
+        <CheckboxList key={listKey} />
+      </div>
     </div>
   );
 }
