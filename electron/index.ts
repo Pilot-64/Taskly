@@ -117,4 +117,7 @@ app.on("window-all-closed", () => {
   }
 });
 
-app.on("before-quit", () => log.shutdown());
+app.on("before-quit", () => {
+  log.info("Application shutting down.");
+  log.shutdown();
+});

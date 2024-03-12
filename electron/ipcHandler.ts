@@ -7,7 +7,7 @@ export function saveTasks(tasks: Tasks[]) {
   const file = join(app.getPath("userData"), "tasks.json");
   try {
     writeFileSync(file, JSON.stringify(tasks));
-    log.info("Successfully saved tasks to file.");
+    log.debug("Successfully saved tasks to file.");
   } catch (error) {
     log.error(error as Error, "Failed to save tasks to file.");
   }

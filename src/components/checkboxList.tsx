@@ -11,7 +11,10 @@ function checkboxList() {
       setTasks(loadedTasks);
       window.Main.LogInfo("Loaded tasks from file successfully!");
 
-      return () => window.Main.SaveTasks(tasks);
+      return () => {
+        window.Main.SaveTasks(tasks);
+        window.Main.LogInfo("Saved tasks on unmount.");
+      };
     });
   }, []);
 
