@@ -5,8 +5,9 @@ import { log } from "./logger";
 
 export function saveTasks(tasks: Tasks[]) {
   const file = join(app.getPath("userData"), "tasks.json");
+  const data = tasks.filter((task) => !task.completed);
   try {
-    writeFileSync(file, JSON.stringify(tasks));
+    writeFileSync(file, JSON.stringify(data));
     log.debug("Successfully saved tasks to file.");
   } catch (error) {
     log.error(error as Error, "Failed to save tasks to file.");
