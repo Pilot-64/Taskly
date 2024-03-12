@@ -140,6 +140,6 @@ class Logs {
 
     app.quit();
   }
-};
+}
 
 export const log = new Logs();

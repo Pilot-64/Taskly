@@ -30,27 +30,30 @@ const api = {
    * @param message A log message.
    * @param object The variable that needs to be logged.
    */
-  LogDebug: (message:string, object?:unknown) => ipcRenderer.send("log-debug", message, object),
+  LogDebug: (message: string, object?: unknown) =>
+    ipcRenderer.send("log-debug", message, object),
 
   /**
    * Log something.
    * @param message The message that will be logged.
    */
-  LogInfo: (message:string) => ipcRenderer.send("log-info", message),
+  LogInfo: (message: string) => ipcRenderer.send("log-info", message),
 
   /**
    * Log a warning.
    * @param message A warning message.
    * @param error An error that got thrown with the warning.
    */
-  LogWarn: ( message:string, error?:Error) => ipcRenderer.send("log-warn", message, error),
+  LogWarn: (message: string, error?: Error) =>
+    ipcRenderer.send("log-warn", message, error),
 
   /**
    * Log an error. This error shouldn't cause the program to exit.
    * @param error The error getting logged.
    * @param message A nice message to go along with it.
    */
-  LogError: (error:Error, message:string) => ipcRenderer.send("log-error", error, message),
+  LogError: (error: Error, message: string) =>
+    ipcRenderer.send("log-error", error, message),
 
   /**
    * Log a fatal error, these errors should cause the program to crash
@@ -59,7 +62,8 @@ const api = {
    * @param error The error getting logged.
    * @param message A nice message to go along with it.
    */
-  LogFatal: (error:Error, message:string) => ipcRenderer.send("log-fatal", error, message)
+  LogFatal: (error: Error, message: string) =>
+    ipcRenderer.send("log-fatal", error, message)
 };
 
 contextBridge.exposeInMainWorld("Main", api);

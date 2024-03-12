@@ -63,11 +63,29 @@ function createWindow() {
   ipcMain.on("save-tasks", (_event: IpcMainEvent, tasks: Tasks[]) =>
     saveTasks(tasks)
   );
-  ipcMain.on("log-debug", (_event: IpcMainEvent, message:string, object?:unknown) => log.debug(message, object));
-  ipcMain.on("log-info", (_event: IpcMainEvent, message:string) => log.info(message));
-  ipcMain.on("log-warn", (_event: IpcMainEvent, message:string, error?:Error) => log.warn(message, error));
-  ipcMain.on("log-error", (_event: IpcMainEvent, error:Error, message:string) => log.error(error, message));
-  ipcMain.on("log-fatal", (_event: IpcMainEvent, error:Error, message:string) => log.fatal(error, message));
+  ipcMain.on(
+    "log-debug",
+    (_event: IpcMainEvent, message: string, object?: unknown) =>
+      log.debug(message, object)
+  );
+  ipcMain.on("log-info", (_event: IpcMainEvent, message: string) =>
+    log.info(message)
+  );
+  ipcMain.on(
+    "log-warn",
+    (_event: IpcMainEvent, message: string, error?: Error) =>
+      log.warn(message, error)
+  );
+  ipcMain.on(
+    "log-error",
+    (_event: IpcMainEvent, error: Error, message: string) =>
+      log.error(error, message)
+  );
+  ipcMain.on(
+    "log-fatal",
+    (_event: IpcMainEvent, error: Error, message: string) =>
+      log.fatal(error, message)
+  );
 }
 
 //* Register common app events
@@ -95,7 +113,7 @@ app.on("window-all-closed", () => {
     log.info("No windows detecting, quitting application.");
     app.quit();
   } else {
-    log.info("No windows detected, waiting for user to create new window.")
+    log.info("No windows detected, waiting for user to create new window.");
   }
 });
 
