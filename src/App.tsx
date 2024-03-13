@@ -6,7 +6,7 @@ import Home from "./tabs/Home";
 
 function App() {
   return (
-    <div className="min-h-screen grid grid-cols-3 antialiased">
+    <div className="font-taskly min-h-screen grid grid-cols-3 antialiased">
       <SideBar />
       <Home />
     </div>
