@@ -1,7 +1,7 @@
 import { app } from "electron";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { log } from "./logger";
+import { log } from "./index";
 
 export function saveTasks(tasks: Tasks[]) {
   const file = join(app.getPath("userData"), "tasks.json");

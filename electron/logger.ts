@@ -5,7 +5,7 @@ import { app } from "electron";
 import dayjs from "dayjs";
 import { writeFileSync } from "node:fs";
 
-class Logs {
+export class Logs {
   private logger!: Logger;
 
   /**
@@ -141,5 +141,3 @@ class Logs {
     app.quit();
   }
 }
-
-export const log = new Logs();

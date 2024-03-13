@@ -3,7 +3,7 @@ import { BrowserWindow, IpcMainEvent, app, ipcMain } from "electron";
 import isDev from "electron-is-dev";
 import { existsSync, mkdirSync } from "node:fs";
 import { loadTasks, saveTasks } from "./ipcHandler";
-import { log } from "./logger";
+import { Logs } from "./logger";
 
 //* Useful variables
 const height = 475;
@@ -26,6 +26,9 @@ app.setPath("userData", userDataPath);
 app.setPath("sessionData", sessionDataPath);
 app.setPath("logs", logPath);
 app.setPath("crashDumps", crashDumpPath);
+
+//* Initialize logger
+export const log = new Logs();
 log.debug("Remapped directories from default to desired ones.");
 
 //* Create window
