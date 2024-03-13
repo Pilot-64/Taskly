@@ -63,8 +63,16 @@ function Home() {
         <h1 className="text-3xl font-bold">Home</h1>
         <div className="h-full w-px bg-gray-300" />
         <div className="flex flex-row items-center space-x-2">
-        <h1 className="text-xl font-bold">{tasks.filter((task) => !task.completed).length}</h1>
-          <p>Unfinished Task{tasks.filter((task) => !task.completed).length == 1 ? "s" : ""}{tasks.filter((task) => !task.completed).length == 0 ? ", Woohoo!" : ""}</p>
+          <h1 className="text-xl font-bold">
+            {tasks.filter((task) => !task.completed).length}
+          </h1>
+          <p>
+            Unfinished Task
+            {tasks.filter((task) => !task.completed).length == 1 ? "s" : ""}
+            {tasks.filter((task) => !task.completed).length == 0
+              ? ", Woohoo!"
+              : ""}
+          </p>
           <button
             className="bg-gray-300 p-1 rounded-md"
             onClick={refreshCheckboxList}

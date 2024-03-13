@@ -8,19 +8,14 @@ function Today() {
         <h1 className="text-3xl font-bold">Today</h1>
         <div className="h-full w-px bg-gray-300" />
         <div className="flex flex-row items-center space-x-2">
-        <h1 className="text-xl font-bold">0</h1>
+          <h1 className="text-xl font-bold">0</h1>
           <p>Tasks Due Today, Woohoo!</p>
-          <button
-            className="bg-gray-300 p-1 rounded-md"
-            onClick={() => {}}
-          >
+          <button className="bg-gray-300 p-1 rounded-md" onClick={() => {}}>
             Clean
           </button>
         </div>
       </div>
-      <div className="px-5">
-        
-      </div>
+      <div className="px-5"></div>
     </div>
   );
 }

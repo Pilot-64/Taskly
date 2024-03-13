@@ -6,32 +6,32 @@ interface CheckboxProps {
   onUpdate(updatedTask: Tasks): void;
 }
 
-function checkbox({ task, onUpdate }: CheckboxProps) {    
+function checkbox({ task, onUpdate }: CheckboxProps) {
   return (
-    <div
-      key={task.id}
-      className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50"
-    >
+    <div className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50">
       <div
-        onClick={() => onUpdate({
-          ...task,
-          completed: !task.completed
-        })}
+        onClick={() =>
+          onUpdate({
+            ...task,
+            completed: !task.completed
+          })
+        }
         className="w-full flex flex-row items-center p-1 cursor-pointer"
       >
         <input
-          id={task.id}
           type="checkbox"
+          id={task.id + "-checkbox"}
           className="bg-white border-green-300 focus:ring-3 focus:ring-green-300 h-full mx-1 rounded-full cursor-pointer"
           checked={task.completed}
-          onChange={() => {}}
+          onChange={() =>
+            onUpdate({
+              ...task,
+              completed: !task.completed
+            })
+          }
         />
         <label
-          htmlFor={task.id}
-          onClick={() => onUpdate({
-            ...task,
-            completed: !task.completed
-          })}
+          htmlFor={task.id + "-checkbox"}
           className={`text-gray-700 cursor-pointer ${task.completed ? "line-through" : ""}`}
         >
           {task.title}
