@@ -16,13 +16,13 @@ function checkboxList({
 }: CheckboxListProps) {
   return (
     <div>
-      <ul>
+      <ul className="space-y-1">
         {tasks.map((task: Tasks) => {
           return <Checkbox key={task.id} task={task} onUpdate={onTaskUpdate} />;
         })}
       </ul>
       <input
-        className="bg-gray-50 w-full"
+        className="sticky bottom-3 bg-gray-50 w-full mt-2 h-[30px] px-2 border-2 rounded-md"
         type="text"
         placeholder="Add new task..."
         name="New task field"
