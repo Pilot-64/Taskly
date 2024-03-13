@@ -19,16 +19,21 @@ function App() {
   const [tab, setTab] = useState<Tabs>(Tabs.home);
 
   const getTab = () => {
-    switch(tab){
-      case(Tabs.home): return(<Home/>);
-      case(Tabs.today): return(<Today/>);
-      case(Tabs.upcoming): return(<Upcoming/>);
-      case(Tabs.settings): return(<Settings/>);
-      default: return (<Home/>);
+    switch (tab) {
+      case Tabs.home:
+        return <Home />;
+      case Tabs.today:
+        return <Today />;
+      case Tabs.upcoming:
+        return <Upcoming />;
+      case Tabs.settings:
+        return <Settings />;
+      default:
+        return <Home />;
     }
   };
 
-  const handleTabSwitch = (newTab:Tabs) => setTab(newTab);
+  const handleTabSwitch = (newTab: Tabs) => setTab(newTab);
 
   return (
     <div className="font-taskly min-h-screen grid grid-cols-3 antialiased">

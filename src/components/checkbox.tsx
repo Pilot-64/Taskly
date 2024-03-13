@@ -6,20 +6,17 @@ interface CheckboxProps {
   onUpdate(updatedTask: Tasks): void;
 }
 
-function checkbox({ task, onUpdate }: CheckboxProps) {
-  const handleCheckboxClick = () =>
-    onUpdate({
-      ...task,
-      completed: !task.completed
-    });
-
+function checkbox({ task, onUpdate }: CheckboxProps) {    
   return (
     <div
       key={task.id}
       className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50"
     >
       <div
-        onClick={handleCheckboxClick}
+        onClick={() => onUpdate({
+          ...task,
+          completed: !task.completed
+        })}
         className="w-full flex flex-row items-center p-1 cursor-pointer"
       >
         <input
@@ -31,7 +28,10 @@ function checkbox({ task, onUpdate }: CheckboxProps) {
         />
         <label
           htmlFor={task.id}
-          onClick={handleCheckboxClick}
+          onClick={() => onUpdate({
+            ...task,
+            completed: !task.completed
+          })}
           className={`text-gray-700 cursor-pointer ${task.completed ? "line-through" : ""}`}
         >
           {task.title}
