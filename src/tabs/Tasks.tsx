@@ -85,8 +85,7 @@ function Tasks() {
       </div>
       <div className="px-5">
         <ul className="space-y-1">
-          {tasks.map((task: Tasks, index: number) => {
-            if (index > 5) return;
+          {tasks.map((task: Tasks) => {
             return (
               <Checkbox key={task.id} task={task} onUpdate={handleTaskUpdate} />
             );
