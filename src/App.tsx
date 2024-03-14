@@ -4,14 +4,14 @@ import { useState } from "react";
 
 import SideBar from "./components/sideBar";
 import Home from "./tabs/Home";
-import Today from "./tabs/Today";
-import Upcoming from "./tabs/Upcoming";
+import Tasks from "./tabs/Tasks";
+import Notes from "./tabs/Notes";
 import Settings from "./tabs/Settings";
 
 export enum Tabs {
   home = "home",
-  today = "today",
-  upcoming = "upcoming",
+  tasks = "tasks",
+  notes = "notes",
   settings = "settings"
 }
 
@@ -22,10 +22,10 @@ function App() {
     switch (tab) {
       case Tabs.home:
         return <Home />;
-      case Tabs.today:
-        return <Today />;
-      case Tabs.upcoming:
-        return <Upcoming />;
+      case Tabs.tasks:
+        return <Tasks />;
+      case Tabs.notes:
+        return <Notes />;
       case Tabs.settings:
         return <Settings />;
       default:

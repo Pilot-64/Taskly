@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
-import { IoHome, IoCalendar, IoSettingsSharp, IoToday } from "react-icons/io5";
+import { IoHome, IoSettingsSharp } from "react-icons/io5";
+import { FaClipboardList } from "react-icons/fa";
+import { RiFilePaper2Fill } from "react-icons/ri";
 import { Tabs } from "../App";
 
 interface sideBarProps {
@@ -24,15 +26,15 @@ function SideBar({ onTabSwitch }: sideBarProps) {
         </button>
         <button
           className="p-2 bg-transparent hover:bg-sky-100 rounded-md flex items-center w-full"
-          onClick={() => onTabSwitch(Tabs.today)}
+          onClick={() => onTabSwitch(Tabs.tasks)}
         >
-          <IoToday className="mr-3 fill-slate-600" /> Today
+          <FaClipboardList className="mr-3 fill-slate-600" /> Tasks
         </button>
         <button
           className="p-2 bg-transparent hover:bg-sky-100 rounded-md flex items-center w-full"
-          onClick={() => onTabSwitch(Tabs.upcoming)}
+          onClick={() => onTabSwitch(Tabs.notes)}
         >
-          <IoCalendar className="mr-3 fill-slate-600" /> Upcoming
+          <RiFilePaper2Fill className="mr-3 fill-slate-600" /> Notes
         </button>
         <div className="w-full h-px bg-gray-300" />
         <button

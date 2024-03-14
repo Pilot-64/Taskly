@@ -6,7 +6,7 @@ interface CheckboxProps {
   onUpdate(updatedTask: Tasks): void;
 }
 
-function checkbox({ task, onUpdate }: CheckboxProps) {
+function Checkbox({ task, onUpdate }: CheckboxProps) {
   return (
     <div className="inline-flex items-center justify-between w-full bg-white rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50">
       <div
@@ -41,4 +41,4 @@ function checkbox({ task, onUpdate }: CheckboxProps) {
   );
 }
 
-export default checkbox;
+export default Checkbox;
