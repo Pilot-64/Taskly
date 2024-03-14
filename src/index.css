@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* cyrillic-ext */
 @font-face {
   font-family: "Inter";
