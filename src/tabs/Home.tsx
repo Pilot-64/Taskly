@@ -1,34 +1,47 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import CheckboxList from "../components/checkboxList";
+import Checkbox from "../components/checkbox";
 
 function Home() {
-  const [listKey, setListKey] = useState<string>(crypto.randomUUID());
+  const [tasks, setTasks] = useState<Tasks[]>([]);
 
-  const refreshCheckboxList = () => {
-    setListKey(crypto.randomUUID());
+  useEffect(() => {
+    window.Main.LoadTasks().then((loadedTasks) => {
+      if (loadedTasks == null) return;
+      setTasks(loadedTasks);
+      window.Main.LogInfo("Loaded tasks from file successfully!");
+
+      return () => {
+        window.Main.SaveTasks(tasks);
+        window.Main.LogInfo("Saved tasks on unmount.");
+      };
+    });
+  }, []);
+
+  const handleTaskUpdate = (updatedTask: Tasks) => {
+    const newTasks = tasks.map((item) =>
+      item.id == updatedTask.id ? updatedTask : item
+    );
+    setTasks(newTasks);
+    window.Main.SaveTasks(newTasks);
+  };
+
+  const displayTasks = () => {
+    const filteredTasks = tasks.filter((_task, index) => index < 5);
+    return filteredTasks.map((task: Tasks) => {
+      return <Checkbox key={task.id} task={task} onUpdate={handleTaskUpdate} />;
+    });
   };
 
   return (
     <div className="bg-white col-span-2 h-full w-full flex flex-col space-y-2">
       <div className="flex sticky top-0 flex-row space-x-5 p-5 items-center select-none bg-white bg-opacity-90">
         <h1 className="text-3xl font-bold">Home</h1>
-        <div className="h-full w-px bg-gray-300" />
-        <div className="flex flex-row items-center space-x-2">
-          <h1 className="text-xl font-bold">0</h1>
-          <p>Unfinished Tasks, Woohoo!</p>
-          <button
-            className="bg-gray-300 p-1 rounded-md"
-            onClick={refreshCheckboxList}
-          >
-            Clean
-          </button>
-        </div>
       </div>
       <div className="px-5">
-        <CheckboxList key={listKey} />
+        <ul className="space-y-1">{displayTasks()}</ul>
       </div>
     </div>
   );
