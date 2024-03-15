@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 import Checkbox from "../components/checkbox";
+import { handleTaskDelete, handleTaskUpdate } from "../lib/taskHandlers";
 
 function Home() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
@@ -20,18 +21,17 @@ function Home() {
     });
   }, []);
 
-  const handleTaskUpdate = (updatedTask: Tasks) => {
-    const newTasks = tasks.map((item) =>
-      item.id == updatedTask.id ? updatedTask : item
-    );
-    setTasks(newTasks);
-    window.Main.SaveTasks(newTasks);
-  };
-
   const displayTasks = () => {
     const filteredTasks = tasks.filter((_task, index) => index < 5);
     return filteredTasks.map((task: Tasks) => {
-      return <Checkbox key={task.id} task={task} onUpdate={handleTaskUpdate} />;
+      return (
+        <Checkbox
+          key={task.id}
+          task={task}
+          onUpdate={(task) => handleTaskUpdate(tasks, setTasks, task)}
+          onDelete={(task) => handleTaskDelete(tasks, setTasks, task)}
+        />
+      );
     });
   };
 

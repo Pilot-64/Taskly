@@ -3,6 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 import Checkbox from "../components/checkbox";
+import { handleTaskDelete, handleTaskUpdate } from "../lib/taskHandlers";
 
 function Tasks() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
@@ -49,19 +50,11 @@ function Tasks() {
     }
   };
 
-  const handleTaskUpdate = (updatedTask: Tasks) => {
-    const newTasks = tasks.map((item) =>
-      item.id == updatedTask.id ? updatedTask : item
-    );
-    setTasks(newTasks);
-    window.Main.SaveTasks(newTasks);
-  };
-
   return (
     <div className="bg-white col-span-2 h-full w-full flex flex-col space-y-2">
       <div className="flex sticky top-0 flex-row space-x-5 p-5 items-center select-none bg-white bg-opacity-90">
         <h1 className="text-3xl font-bold">Tasks</h1>
-        <div className="h-full w-px bg-gray-300" />
+        <hr className="h-full w-px bg-gray-300" />
         <div className="flex flex-row w-full items-center justify-between space-x-2">
           <div className="flex items-center space-x-2">
             <h1 className="text-xl font-bold">
@@ -87,7 +80,12 @@ function Tasks() {
         <ul className="space-y-1">
           {tasks.map((task: Tasks) => {
             return (
-              <Checkbox key={task.id} task={task} onUpdate={handleTaskUpdate} />
+              <Checkbox
+                key={task.id}
+                task={task}
+                onUpdate={(task) => handleTaskUpdate(tasks, setTasks, task)}
+                onDelete={(task) => handleTaskDelete(tasks, setTasks, task)}
+              />
             );
           })}
         </ul>
