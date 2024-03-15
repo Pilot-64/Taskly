@@ -6,7 +6,7 @@ import { RiFilePaper2Fill } from "react-icons/ri";
 import { Tabs } from "../App";
 
 interface sideBarProps {
-  onTabSwitch(newTab: string): void;
+  onTabSwitch: (newTab: string) => void;
 }
 
 function SideBar({ onTabSwitch }: sideBarProps) {

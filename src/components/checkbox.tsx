@@ -6,8 +6,8 @@ import { useState } from "react";
 
 interface CheckboxProps {
   task: Tasks;
-  onUpdate(updatedTask: Tasks): void;
-  onDelete(deletedTask: Tasks): void;
+  onUpdate: (updatedTask: Tasks) => void;
+  onDelete: (deletedTask: Tasks) => void;
 }
 
 function Checkbox({ task, onUpdate, onDelete }: CheckboxProps) {
@@ -48,9 +48,7 @@ function Checkbox({ task, onUpdate, onDelete }: CheckboxProps) {
           />
           <div className="bg-white text-black cursor-default z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
             <div className="inline-flex items-center justify-between w-full p-1">
-              <h2 className="text-2xl">
-                {task.title}
-              </h2>
+              <h2 className="text-2xl">{task.title}</h2>
               <MdDeleteForever
                 className="w-6 h-6 cursor-pointer hover:fill-gray-600"
                 onClick={() => {
@@ -60,7 +58,6 @@ function Checkbox({ task, onUpdate, onDelete }: CheckboxProps) {
               />
             </div>
             <hr className="w-full h-px bg-gray-300" />
-            
           </div>
         </div>
       ) : null}
