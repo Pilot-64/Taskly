@@ -1,8 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from "react";
-import { useState, useEffect } from "react";
-
-import Checkbox from "../components/checkbox";
+import React, { useState, useEffect } from "react";
+import Checkbox from "../components/Checkbox";
 
 interface CheckboxListProps {
   input?: boolean;
@@ -16,6 +13,7 @@ function CheckboxList({
   setTaskNum = undefined
 }: CheckboxListProps) {
   const [tasks, setTasks] = useState<Tasks[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     window.Main.LoadTasks().then((loadedTasks) => {
@@ -35,27 +33,29 @@ function CheckboxList({
   }, []);
 
   const handleTaskDelete = (deletedTask: Tasks) => {
-    const newTasks = tasks.filter((item) => item.id != deletedTask.id);
+    const newTasks = tasks.filter((item) => item.id !== deletedTask.id);
     if (setTaskNum != undefined)
       setTaskNum(newTasks.filter((task) => !task.completed).length);
     setTasks(newTasks);
+    setSelectedId(null);
     window.Main.SaveTasks(newTasks);
   };
 
   const handleTaskUpdate = (updatedTask: Tasks) => {
     const newTasks = tasks.map((item) =>
-      item.id == updatedTask.id ? updatedTask : item
+      item.id === updatedTask.id ? updatedTask : item
     );
     if (setTaskNum != undefined)
       setTaskNum(newTasks.filter((task) => !task.completed).length);
     setTasks(newTasks);
+    setSelectedId(updatedTask.id);
     window.Main.SaveTasks(newTasks);
   };
 
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (event.key == "Enter") {
+    if (event.key === "Enter") {
       const inputValue = event.currentTarget.value.trim();
       if (inputValue) {
         const newTask: Tasks = {
@@ -77,20 +77,22 @@ function CheckboxList({
     <div className="px-5">
       <ul className="space-y-1">
         {tasks.map((task: Tasks, index) => {
-          if(maxTasks != null && index > maxTasks - 1) return
+          if (maxTasks != null && index > maxTasks - 1) return null;
           return (
             <Checkbox
               key={task.id}
               task={task}
               onUpdate={handleTaskUpdate}
               onDelete={handleTaskDelete}
+              isSelected={selectedId === task.id}
+              onSelect={() => setSelectedId(task.id)}
             />
           );
         })}
       </ul>
       {input ? (
         <input
-          className="sticky bottom-3 bg-gray-50 w-full mt-2 h-[30px] px-2 border-2 rounded-md"
+          className="fixed bottom-3 bg-gray-50 w-full mt-2 h-[30px] px-2 border-2 rounded-md"
           type="text"
           placeholder="Add new task..."
           name="New task field"
