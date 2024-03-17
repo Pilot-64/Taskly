@@ -2,7 +2,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-import Checkbox from "../components/checkbox";
+import Checkbox from "./checkbox";
 
 interface CheckboxListProps {
   input?: boolean;
