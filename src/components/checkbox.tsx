@@ -1,4 +1,3 @@
-// Checkbox.tsx
 import React from "react";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { MdDeleteForever } from "react-icons/md";
@@ -22,7 +21,7 @@ function Checkbox({
 
   return (
     <li
-      className={`inline-flex items-center justify-between w-full ${isSelected ? "bg-gray-100" : "bg-white"} rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-gray-50`}
+      className={`inline-flex items-center justify-between w-full ${isSelected ? "bg-blue-100" : "bg-white"} rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-blue-50`}
     >
       <div
         onClick={() => {

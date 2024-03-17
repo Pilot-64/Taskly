@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Checkbox from "../components/Checkbox";
+
+import Checkbox from "./checkbox";
 
 interface CheckboxListProps {
   input?: boolean;
@@ -74,30 +75,32 @@ function CheckboxList({
   };
 
   return (
-    <div className="px-5">
+    <div className="px-5 relative">
       <ul className="space-y-1">
         {tasks.map((task: Tasks, index) => {
-          if (maxTasks != null && index > maxTasks - 1) return null;
+          if (maxTasks != null && index > maxTasks) return null;
           return (
             <Checkbox
               key={task.id}
               task={task}
               onUpdate={handleTaskUpdate}
               onDelete={handleTaskDelete}
-              isSelected={selectedId === task.id}
+              isSelected={selectedId == task.id}
               onSelect={() => setSelectedId(task.id)}
             />
           );
         })}
       </ul>
       {input ? (
-        <input
-          className="fixed bottom-3 bg-gray-50 w-full mt-2 h-[30px] px-2 border-2 rounded-md"
-          type="text"
-          placeholder="Add new task..."
-          name="New task field"
-          onKeyDownCapture={handleInputKeyPress}
-        />
+        <div className="absolute left-0 bottom-0 p-2 bg-white w-full h-[46px]">
+          <input
+            className="bg-gray-50 w-full h-[30px] px-2 border-2 rounded-md"
+            type="text"
+            placeholder="Add new task..."
+            name="New task field"
+            onKeyDownCapture={handleInputKeyPress}
+          />
+        </div>
       ) : null}
     </div>
   );

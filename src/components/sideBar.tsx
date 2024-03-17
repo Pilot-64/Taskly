@@ -11,7 +11,7 @@ interface sideBarProps {
 
 function SideBar({ onTabSwitch }: sideBarProps) {
   return (
-    <div className="sticky top-0 bg-slate-100 h-dvh w-full p-4 self-start">
+    <div className="sticky top-0 bg-slate-100 h-dvh w-full p-4 self-start col-span-1">
       <ul className="space-y-1 select-none">
         <div className="flex my-2 items-center">
           <img src="https://picsum.photos/50/50" />
