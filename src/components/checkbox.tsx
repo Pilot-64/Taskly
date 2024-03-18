@@ -41,14 +41,19 @@ function Checkbox({ task, onUpdate, onDelete }: CheckboxProps) {
         onClick={() => setShowModal(!showModal)}
       />
       {showModal ? (
-        <div className="grid place-content-center w-screen h-screen absolute top-0 left-0 z-10">
+        <div className="grid place-content-center w-screen h-screen fixed top-0 left-0 z-10">
           <div
-            className="w-screen h-screen absolute top-0 left-0 z-10 bg-gray-300 opacity-70"
+            className="w-screen h-screen fixed top-0 left-0 z-10 bg-gray-300 opacity-70"
             onClick={() => setShowModal(!showModal)}
           />
-          <div className="bg-white text-black cursor-default z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
+          <div className="bg-white text-black cursor-auto z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
             <div className="inline-flex items-center justify-between w-full p-1">
-              <h2 className="text-2xl">{task.title}</h2>
+              <h2 className="text-2xl w-1/2 line-clamp-1 relative">
+                {task.title}
+                <span className="hidden z-30 bg-gray-500 text-white text-center px-1 rounded-md absolute hover:visible">
+                  {task.title}
+                </span>
+              </h2>
               <MdDeleteForever
                 className="w-6 h-6 cursor-pointer hover:fill-gray-600"
                 onClick={() => {

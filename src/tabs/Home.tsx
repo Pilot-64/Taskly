@@ -25,9 +25,7 @@ function Home() {
       <div className="flex sticky top-0 flex-row space-x-5 p-5 items-center select-none bg-white bg-opacity-90">
         <h1 className="text-3xl font-bold">Home</h1>
       </div>
-      <CheckboxList
-        maxTasks={5}
-      />
+      <CheckboxList maxTasks={5} />
     </div>
   );
 }

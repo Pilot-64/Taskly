@@ -1,23 +1,30 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 import { useState, useEffect } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useAnimate } from "framer-motion";
 
 import Checkbox from "./checkbox";
 
 interface CheckboxListProps {
   input?: boolean;
+  animation?: boolean;
   maxTasks?: number | null;
   setTaskNum?: (taskNum: number) => void;
 }
 
 function CheckboxList({
   input = false,
+  animation = true,
   maxTasks = null,
   setTaskNum = undefined
 }: CheckboxListProps) {
   const [tasks, setTasks] = useState<Tasks[]>([]);
+  const [parent, enableAnimations] = useAutoAnimate();
+  const [scope, animate] = useAnimate();
 
   useEffect(() => {
+    enableAnimations(animation);
     window.Main.LoadTasks().then((loadedTasks) => {
       if (loadedTasks == null) return;
 
@@ -57,9 +64,9 @@ function CheckboxList({
   ) => {
     if (event.key == "Enter") {
       const inputValue = event.currentTarget.value.trim();
-      if (inputValue) {
+      if (inputValue && inputValue.length >= 3 && inputValue.length <= 32) {
         const newTask: Tasks = {
-          id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+          id: crypto.randomUUID(),
           title: inputValue,
           completed: false
         };
@@ -69,15 +76,43 @@ function CheckboxList({
           return newTasks;
         });
         event.currentTarget.value = "";
+      } else {
+        animate(
+          scope.current,
+          {
+            x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0],
+            backgroundColor: [
+              "rgb(249 250 251 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(254 242 242 / 1",
+              "rgb(249 250 251 / 1"
+            ],
+            transition: {
+              duration: 0.5,
+              ease: "easeInOut"
+            }
+          },
+          {
+            duration: 0.5
+          }
+        );
       }
     }
   };
 
   return (
     <div className="px-5">
-      <ul className="space-y-1">
+      <ul className="space-y-1" ref={parent}>
         {tasks.map((task: Tasks, index) => {
-          if(maxTasks != null && index > maxTasks - 1) return
+          if (maxTasks != null && index > maxTasks - 1) return;
           return (
             <Checkbox
               key={task.id}
@@ -93,7 +128,7 @@ function CheckboxList({
           className="sticky bottom-3 bg-gray-50 w-full mt-2 h-[30px] px-2 border-2 rounded-md"
           type="text"
           placeholder="Add new task..."
-          name="New task field"
+          ref={scope}
           onKeyDownCapture={handleInputKeyPress}
         />
       ) : null}
