@@ -78,7 +78,7 @@ function CheckboxList({
     <div className="px-5">
       <ul className="space-y-1">
         {tasks.map((task: Tasks, index) => {
-          if (maxTasks != null && index > maxTasks) return null;
+          if (maxTasks != null && index >= maxTasks) return null;
           return (
             <Checkbox
               key={task.id}
