@@ -34,7 +34,7 @@ function CheckboxList({
   }, []);
 
   const handleTaskDelete = (deletedTask: Tasks) => {
-    const newTasks = tasks.filter((item) => item.id !== deletedTask.id);
+    const newTasks = tasks.filter((item) => item.id != deletedTask.id);
     if (setTaskNum != undefined)
       setTaskNum(newTasks.filter((task) => !task.completed).length);
     setTasks(newTasks);
@@ -44,7 +44,7 @@ function CheckboxList({
 
   const handleTaskUpdate = (updatedTask: Tasks) => {
     const newTasks = tasks.map((item) =>
-      item.id === updatedTask.id ? updatedTask : item
+      item.id == updatedTask.id ? updatedTask : item
     );
     if (setTaskNum != undefined)
       setTaskNum(newTasks.filter((task) => !task.completed).length);
@@ -56,11 +56,11 @@ function CheckboxList({
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (event.key === "Enter") {
+    if (event.key == "Enter") {
       const inputValue = event.currentTarget.value.trim();
       if (inputValue) {
         const newTask: Tasks = {
-          id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+          id: crypto.randomUUID(),
           title: inputValue,
           completed: false
         };
@@ -75,7 +75,7 @@ function CheckboxList({
   };
 
   return (
-    <div className="px-5 relative">
+    <div className="px-5">
       <ul className="space-y-1">
         {tasks.map((task: Tasks, index) => {
           if (maxTasks != null && index > maxTasks) return null;

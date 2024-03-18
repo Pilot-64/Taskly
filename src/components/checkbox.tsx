@@ -21,12 +21,10 @@ function Checkbox({
 
   return (
     <li
-      className={`inline-flex items-center justify-between w-full ${isSelected ? "bg-blue-100" : "bg-white"} rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 hover:text-gray-50 hover:bg-blue-50`}
+      className={`inline-flex items-center justify-between w-full rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 ${isSelected ? "bg-blue-50" : "bg-white hover:text-gray-50 hover:bg-gray-50"}`}
     >
       <div
-        onClick={() => {
-          onSelect();
-        }}
+        onClick={onSelect}
         onDoubleClick={() => {
           setShowModal(!showModal);
         }}
@@ -61,10 +59,10 @@ function Checkbox({
       {showModal ? (
         <div className="grid place-content-center w-screen h-screen absolute top-0 left-0 z-10">
           <div
-            className="w-screen h-screen absolute top-0 left-0 z-10 bg-gray-300 opacity-70"
+            className="w-screen h-screen absolute top-0 left-0 z-40 bg-gray-300 opacity-70"
             onClick={() => setShowModal(!showModal)}
           />
-          <div className="bg-white text-black cursor-default z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
+          <div className="bg-white text-black cursor-default z-50 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
             <div className="inline-flex items-center justify-between w-full p-1">
               <h2 className="text-2xl">{task.title}</h2>
               <MdDeleteForever
