@@ -92,7 +92,7 @@ function CheckboxList({
         })}
       </ul>
       {input ? (
-        <div className="absolute left-0 bottom-0 p-2 bg-white w-full h-[46px]">
+        <div className="fixed left-0 bottom-0 p-2 bg-white w-full h-[46px]">
           <input
             className="bg-gray-50 w-full h-[30px] px-2 border-2 rounded-md"
             type="text"
