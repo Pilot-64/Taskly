@@ -22,6 +22,7 @@ function CheckboxList({
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [parent, enableAnimations] = useAutoAnimate();
   const [scope, animate] = useAnimate();
+  const [invalidInput, setInvalidInput] = useState<boolean>(false);
 
   useEffect(() => {
     enableAnimations(animation);
@@ -62,7 +63,7 @@ function CheckboxList({
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (event.key == "Enter") {
+    if (event.key == "Enter" && !invalidInput) {
       const inputValue = event.currentTarget.value.trim();
       if (inputValue && inputValue.length >= 3 && inputValue.length <= 32) {
         const newTask: Tasks = {
@@ -80,30 +81,14 @@ function CheckboxList({
         animate(
           scope.current,
           {
-            x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0],
-            backgroundColor: [
-              "rgb(249 250 251 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(254 242 242 / 1",
-              "rgb(249 250 251 / 1"
-            ],
-            transition: {
-              duration: 0.5,
-              ease: "easeInOut"
-            }
+            x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0]
           },
           {
             duration: 0.5
           }
         );
+        setInvalidInput(true);
+        setTimeout(() => setInvalidInput(false), 500);
       }
     }
   };
@@ -125,7 +110,7 @@ function CheckboxList({
       </ul>
       {input ? (
         <input
-          className="sticky bottom-3 bg-gray-50 w-full mt-2 h-[30px] px-2 border-2 rounded-md"
+          className={`sticky bottom-3 w-full mt-2 h-[30px] px-2 border-2 rounded-md ${invalidInput ? "bg-red-50" : "bg-gray-50"}`}
           type="text"
           placeholder="Add new task..."
           ref={scope}
