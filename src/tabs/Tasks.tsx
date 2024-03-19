@@ -31,7 +31,12 @@ function Tasks() {
         </div>
       </div>
 
-      <CheckboxList key={checklistKey} input={true} setTaskNum={setNumTasks} />
+      <CheckboxList
+        animation={true}
+        key={checklistKey}
+        input={true}
+        setTaskNum={setNumTasks}
+      />
     </div>
   );
 }

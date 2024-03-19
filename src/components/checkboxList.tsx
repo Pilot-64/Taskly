@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useAnimate } from "framer-motion";
 
@@ -25,7 +25,6 @@ function CheckboxList({
   const [initialRender, setInitialRender] = useState<boolean>(true);
 
   enableAnimations(animation);
-
 
   useEffect(() => {
     if (initialRender) {
@@ -72,15 +71,16 @@ function CheckboxList({
         setTasks((prevTasks) => [...prevTasks, newTask]);
         event.currentTarget.value = "";
       } else {
-        animate(
-          scope.current,
-          {
-            x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0]
-          },
-          {
-            duration: 0.5
-          }
-        );
+        if (animation)
+          animate(
+            scope.current,
+            {
+              x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0]
+            },
+            {
+              duration: 0.5
+            }
+          );
         setInvalidInput(true);
         setTimeout(() => setInvalidInput(false), 500);
       }
@@ -100,6 +100,7 @@ function CheckboxList({
               onDelete={handleTaskDelete}
               isSelected={selectedId == task.id}
               onSelect={() => setSelectedId(task.id)}
+              animation={animation}
             />
           );
         })}

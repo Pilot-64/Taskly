@@ -8,6 +8,7 @@ interface CheckboxProps {
   onDelete: (deletedTask: Tasks) => void;
   isSelected: boolean;
   onSelect: () => void;
+  animation: boolean;
 }
 
 function Checkbox({
@@ -15,7 +16,8 @@ function Checkbox({
   onUpdate,
   onDelete,
   isSelected,
-  onSelect
+  onSelect,
+  animation
 }: CheckboxProps) {
   const [showModal, setShowModal] = React.useState<boolean>(false);
 
@@ -47,13 +49,15 @@ function Checkbox({
             onChange={() => {}}
           />
           <label
-            className={`group text-gray-700 select-none cursor-pointer line-clamp-1`}
+            className={`text-gray-700 select-none cursor-pointer line-clamp-1 ${!animation && task.completed ? "line-through" : ""}`}
             style={{ position: "relative" }}
           >
             {task.title}
-            <span
-              className={`absolute left-0 bottom-[45%] w-full h-[1px] bg-black ${task.completed ? "transform -translate-x-[0%] transition-all duration-500 w-0" : "transform -translate-x-[100%] transition-all duration-500 max-w-full"} `}
-            />
+            {animation ? (
+              <span
+                className={`absolute left-0 bottom-[45%] w-full h-[1px] bg-black ${task.completed ? "transform -translate-x-[0%] transition-all duration-500 w-0" : "transform -translate-x-[100%] transition-all duration-500 max-w-full"} `}
+              />
+            ) : null}
           </label>
         </div>
       </div>
