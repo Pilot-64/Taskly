@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import Checkbox from "./checkbox";
 
@@ -25,12 +25,12 @@ function CheckboxList({
 
       setTasks(loadedTasks);
       window.Main.LogInfo("Loaded tasks from file successfully!");
-
-      return () => {
-        window.Main.SaveTasks(tasks);
-        window.Main.LogInfo("Saved tasks on unmount.");
-      };
     });
+
+    return () => {
+      window.Main.SaveTasks(tasks);
+      window.Main.LogInfo("Saved tasks on unmount.");
+    };
   }, []);
 
   const handleTaskDelete = (deletedTask: Tasks) => {
