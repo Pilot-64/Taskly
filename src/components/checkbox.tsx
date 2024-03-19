@@ -79,7 +79,7 @@ function Checkbox({
                 className="w-6 h-6 cursor-pointer hover:fill-gray-600"
                 onClick={() => {
                   setShowModal(false);
-                  onDelete(task);
+                  setTimeout(() => onDelete(task), 50);
                 }}
               />
             </div>
