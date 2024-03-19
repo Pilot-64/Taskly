@@ -21,7 +21,8 @@ function Checkbox({
 
   return (
     <li
-      className={`inline-flex items-center justify-between w-full rounded-lg cursor-pointer peer-checked:bg-gray-100 peer-checked:text-gray-100 ${isSelected ? "bg-blue-50" : "bg-white hover:text-gray-50 hover:bg-gray-50"}`}
+      className={`inline-flex items-center justify-between w-full rounded-lg cursor-pointer peer-checked:bg-gray-100
+        peer-checked:text-gray-100 ${isSelected ? "bg-blue-50" : "bg-white hover:text-gray-50 hover:bg-gray-50"} `}
     >
       <div
         onClick={onSelect}
@@ -46,9 +47,13 @@ function Checkbox({
             onChange={() => {}}
           />
           <label
-            className={`text-gray-700 select-none cursor-pointer ${task.completed ? "line-through" : ""} line-clamp-1`}
+            className={`group text-gray-700 select-none cursor-pointer line-clamp-1`}
+            style={{ position: "relative" }}
           >
             {task.title}
+            <span
+              className={`absolute left-0 bottom-[45%] w-full h-[1px] bg-black ${task.completed ? "transform -translate-x-[0%] transition-all duration-500 w-0" : "transform -translate-x-[100%] transition-all duration-500 max-w-full"} `}
+            />
           </label>
         </div>
       </div>
