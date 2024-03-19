@@ -14,7 +14,7 @@ function SideBar({ onTabSwitch }: sideBarProps) {
     <div className="sticky top-0 bg-slate-100 h-dvh w-full p-4 self-start col-span-1">
       <ul className="space-y-1 select-none">
         <div className="flex my-2 items-center">
-          <img src="https://picsum.photos/50/50" />
+          <img className="rounded-full w-[40px]" src="https://picsum.photos/50/50" />
           <p className="ml-3 font-medium">Lorem Ipsum Dolor</p>
         </div>
         <div className="w-full h-px bg-gray-300" />
