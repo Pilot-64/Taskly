@@ -49,8 +49,7 @@ function Checkbox({
             onChange={() => {}}
           />
           <label
-            className={`text-gray-700 select-none cursor-pointer line-clamp-1 ${!animation && task.completed ? "line-through" : ""}`}
-            style={{ position: "relative" }}
+            className={`relative text-gray-700 select-none cursor-pointer line-clamp-1 ${!animation && task.completed ? "line-through" : ""}`}
           >
             {task.title}
             {animation ? (
