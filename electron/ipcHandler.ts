@@ -21,7 +21,10 @@ export function loadTasks() {
     log.debug("Read saved tasks from file.");
     return JSON.parse(data + "") as Tasks[];
   } catch (error) {
-    log.error(error as Error, "Failed to read saved tasks from file.");
+    log.warn(
+      "Failed to read saved tasks from file, could be because no tasks where ever saved.",
+      error as Error
+    );
     return null;
   }
 }
