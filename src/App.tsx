@@ -16,7 +16,7 @@ export enum Tabs {
 }
 
 function App() {
-  const [tab, setTab] = useState<Tabs>(Tabs.home);
+  const [tab, setTab] = useState<string>(Tabs.home);
 
   const getTab = () => {
     switch (tab) {
@@ -33,7 +33,7 @@ function App() {
     }
   };
 
-  const handleTabSwitch = (newTab: Tabs) => setTab(newTab);
+  const handleTabSwitch = (newTab: string) => setTab(newTab);
 
   return (
     <div className="font-taskly min-h-screen grid grid-cols-3 antialiased">

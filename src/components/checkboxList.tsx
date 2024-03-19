@@ -1,6 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useAnimate } from "framer-motion";
 
@@ -20,6 +18,7 @@ function CheckboxList({
   setTaskNum = undefined
 }: CheckboxListProps) {
   const [tasks, setTasks] = useState<Tasks[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [parent, enableAnimations] = useAutoAnimate();
   const [scope, animate] = useAnimate();
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
@@ -34,12 +33,12 @@ function CheckboxList({
 
       setTasks(loadedTasks);
       window.Main.LogInfo("Loaded tasks from file successfully!");
-
-      return () => {
-        window.Main.SaveTasks(tasks);
-        window.Main.LogInfo("Saved tasks on unmount.");
-      };
     });
+
+    return () => {
+      window.Main.SaveTasks(tasks);
+      window.Main.LogInfo("Saved tasks on unmount.");
+    };
   }, []);
 
   const handleTaskDelete = (deletedTask: Tasks) => {
@@ -47,6 +46,7 @@ function CheckboxList({
     if (setTaskNum != undefined)
       setTaskNum(newTasks.filter((task) => !task.completed).length);
     setTasks(newTasks);
+    setSelectedId(null);
     window.Main.SaveTasks(newTasks);
   };
 
@@ -57,6 +57,7 @@ function CheckboxList({
     if (setTaskNum != undefined)
       setTaskNum(newTasks.filter((task) => !task.completed).length);
     setTasks(newTasks);
+    setSelectedId(updatedTask.id);
     window.Main.SaveTasks(newTasks);
   };
 
@@ -97,25 +98,29 @@ function CheckboxList({
     <div className="px-5">
       <ul className="space-y-1" ref={parent}>
         {tasks.map((task: Tasks, index) => {
-          if (maxTasks != null && index > maxTasks - 1) return;
+          if (maxTasks != null && index >= maxTasks) return null;
           return (
             <Checkbox
               key={task.id}
               task={task}
               onUpdate={handleTaskUpdate}
               onDelete={handleTaskDelete}
+              isSelected={selectedId == task.id}
+              onSelect={() => setSelectedId(task.id)}
             />
           );
         })}
       </ul>
       {input ? (
-        <input
-          className={`sticky bottom-3 w-full mt-2 h-[30px] px-2 border-2 rounded-md ${invalidInput ? "bg-red-50" : "bg-gray-50"}`}
-          type="text"
-          placeholder="Add new task..."
-          ref={scope}
-          onKeyDownCapture={handleInputKeyPress}
-        />
+        <div className="fixed left-0 bottom-0 p-2 bg-white w-full h-[46px]">
+          <input
+            className={`w-full h-[30px] px-2 border-2 rounded-md ${invalidInput ? "bg-red-50" : "bg-gray-50"}`}
+            type="text"
+            placeholder="Add new task..."
+            ref={scope}
+            onKeyDownCapture={handleInputKeyPress}
+          />
+        </div>
       ) : null}
     </div>
   );
