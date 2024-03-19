@@ -88,8 +88,8 @@ function CheckboxList({
   };
 
   return (
-    <div className="px-5">
-      <ul className="space-y-1" ref={parent}>
+    <div>
+      <ul className="px-5" ref={parent}>
         {tasks.map((task: Tasks, index) => {
           if (maxTasks != null && index >= maxTasks) return null;
           return (
@@ -106,7 +106,7 @@ function CheckboxList({
         })}
       </ul>
       {input ? (
-        <div className="fixed left-0 bottom-0 p-2 bg-white w-full h-[46px]">
+        <div className="fixed bottom-0 p-2 bg-white w-[66.6%] h-[46px]">
           <input
             className={`w-full h-[30px] px-2 border-2 rounded-md ${invalidInput ? "bg-red-50" : "bg-gray-50"}`}
             type="text"
