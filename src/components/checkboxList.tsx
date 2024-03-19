@@ -63,7 +63,7 @@ function CheckboxList({
   ) => {
     if (event.key == "Enter" && !invalidInput) {
       const inputValue = event.currentTarget.value.trim();
-      if (inputValue && inputValue.length >= 2 && inputValue.length <= 32) {
+      if (inputValue && inputValue.length >= 2 && inputValue.length <= 50) {
         const newTask: Tasks = {
           id: crypto.randomUUID(),
           title: inputValue,
