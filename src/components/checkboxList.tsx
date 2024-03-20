@@ -19,8 +19,8 @@ function CheckboxList({
 }: CheckboxListProps) {
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [parent, enableAnimations] = useAutoAnimate();
-  const [scope, animate] = useAnimate();
+  const [parentOfAnimatedChildren, enableAnimations] = useAutoAnimate();
+  const [elementToAnimate, animate] = useAnimate();
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
   const [initialRender, setInitialRender] = useState<boolean>(true);
 
@@ -43,6 +43,42 @@ function CheckboxList({
     }
   }, [tasks, setTaskNum]);
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (selectedId == null) return;
+    window.Main.LogDebug(event.key);
+    switch (event.key) {
+      case "Enter": {
+        const taskToComplete = tasks.find((task) => task.id == selectedId);
+        if (taskToComplete) {
+          taskToComplete.completed = !taskToComplete.completed;
+          handleTaskUpdate(taskToComplete);
+        } else {
+          setSelectedId(null);
+        }
+        break;
+      }
+      case "Backspace": {
+        const taskToDelete = tasks.find((task) => task.id == selectedId);
+        if (taskToDelete) {
+          handleTaskDelete(taskToDelete);
+        } else {
+          setSelectedId(null);
+        }
+        break;
+      }
+      default: break;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    window.Main.LogDebug("Added document keydown event listener.");
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      window.Main.LogDebug("Removed document keydown event listener.");
+    };
+  }, [handleKeyDown]);
+
   const handleTaskDelete = (deletedTask: Tasks) => {
     const newTasks = tasks.filter((item) => item.id != deletedTask.id);
     setTasks(newTasks);
@@ -62,7 +98,7 @@ function CheckboxList({
   ) => {
     if (event.key == "Enter" && !invalidInput) {
       const inputValue = event.currentTarget.value.trim();
-      if (inputValue && inputValue.length >= 2 && inputValue.length <= 50) {
+      if (inputValue && inputValue.length >= 3 && inputValue.length <= 50) {
         const newTask: Tasks = {
           id: crypto.randomUUID(),
           title: inputValue,
@@ -73,7 +109,7 @@ function CheckboxList({
       } else {
         if (animation)
           animate(
-            scope.current,
+            elementToAnimate.current,
             {
               x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0]
             },
@@ -89,7 +125,7 @@ function CheckboxList({
 
   return (
     <div>
-      <ul className="px-5" ref={parent}>
+      <ul className="px-5" ref={parentOfAnimatedChildren}>
         {tasks.map((task: Tasks, index) => {
           if (maxTasks != null && index >= maxTasks) return null;
           return (
@@ -111,7 +147,8 @@ function CheckboxList({
             className={`w-full h-[30px] px-2 border-2 rounded-md ${invalidInput ? "bg-red-50" : "bg-gray-50"}`}
             type="text"
             placeholder="Add new task..."
-            ref={scope}
+            ref={elementToAnimate}
+            onClick={() => setSelectedId(null)}
             onKeyDownCapture={handleInputKeyPress}
           />
         </div>
