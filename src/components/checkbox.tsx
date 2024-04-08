@@ -33,20 +33,17 @@ function Checkbox({
         }}
         className="w-full flex flex-row items-center p-1"
       >
-        <div
-          onClick={() => {
-            onUpdate({
-              ...task,
-              completed: !task.completed
-            });
-          }}
-          className="flex flex-row items-center cursor-pointer"
-        >
+        <div className="flex flex-row items-center cursor-pointer">
           <input
             type="checkbox"
             className="bg-white border-green-300 focus:ring-3 focus:ring-green-300 h-full mx-1 rounded-full cursor-pointer"
             checked={task.completed}
-            onChange={() => {}}
+            onChange={() => {
+              onUpdate({
+                ...task,
+                completed: !task.completed
+              });
+            }}
           />
           <label
             className={`relative text-gray-700 select-none cursor-pointer line-clamp-1 ${!animation && task.completed ? "line-through" : ""}`}

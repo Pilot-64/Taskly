@@ -18,7 +18,7 @@ function CheckboxList({
   setTaskNum = undefined
 }: CheckboxListProps) {
   const [tasks, setTasks] = useState<Tasks[]>([]);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]); // Modified to hold multiple selected ids
   const [parentOfAnimatedChildren, enableAnimations] = useAutoAnimate();
   const [elementToAnimate, animate] = useAnimate();
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
@@ -44,29 +44,32 @@ function CheckboxList({
   }, [tasks, setTaskNum]);
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (selectedId == null) return;
+    if (selectedIds.length === 0) return; // Check if anything is selected
     window.Main.LogDebug(event.key);
     switch (event.key) {
       case "Enter": {
-        const taskToComplete = tasks.find((task) => task.id == selectedId);
-        if (taskToComplete) {
-          taskToComplete.completed = !taskToComplete.completed;
-          handleTaskUpdate(taskToComplete);
-        } else {
-          setSelectedId(null);
-        }
+        selectedIds.forEach((selectedId) => {
+          const taskToComplete = tasks.find((task) => task.id === selectedId);
+          if (taskToComplete) {
+            taskToComplete.completed = !taskToComplete.completed;
+            handleTaskUpdate(taskToComplete);
+          }
+        });
+        setSelectedIds([]); // Clear selected ids after completion
         break;
       }
       case "Backspace": {
-        const taskToDelete = tasks.find((task) => task.id == selectedId);
-        if (taskToDelete) {
-          handleTaskDelete(taskToDelete);
-        } else {
-          setSelectedId(null);
-        }
+        selectedIds.forEach((selectedId) => {
+          const taskToDelete = tasks.find((task) => task.id === selectedId);
+          if (taskToDelete) {
+            handleTaskDelete(taskToDelete);
+          }
+        });
+        setSelectedIds([]); // Clear selected ids after deletion
         break;
       }
-      default: break;
+      default:
+        break;
     }
   };
 
@@ -80,23 +83,21 @@ function CheckboxList({
   }, [handleKeyDown]);
 
   const handleTaskDelete = (deletedTask: Tasks) => {
-    const newTasks = tasks.filter((item) => item.id != deletedTask.id);
+    const newTasks = tasks.filter((item) => !selectedIds.includes(item.id));
     setTasks(newTasks);
-    setSelectedId(null);
   };
 
   const handleTaskUpdate = (updatedTask: Tasks) => {
     const newTasks = tasks.map((item) =>
-      item.id == updatedTask.id ? updatedTask : item
+      selectedIds.includes(item.id) ? updatedTask : item
     );
     setTasks(newTasks);
-    setSelectedId(updatedTask.id);
   };
 
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (event.key == "Enter" && !invalidInput) {
+    if (event.key === "Enter" && !invalidInput) {
       const inputValue = event.currentTarget.value.trim();
       if (inputValue && inputValue.length >= 3 && inputValue.length <= 50) {
         const newTask: Tasks = {
@@ -123,6 +124,15 @@ function CheckboxList({
     }
   };
 
+  const toggleSelectedId = (id: string) => {
+    setSelectedIds(
+      (prevIds) =>
+        prevIds.includes(id)
+          ? prevIds.filter((prevId) => prevId !== id) // Deselect if already selected
+          : [...prevIds, id] // Select if not already selected
+    );
+  };
+
   return (
     <div>
       <ul className="px-5" ref={parentOfAnimatedChildren}>
@@ -134,8 +144,8 @@ function CheckboxList({
               task={task}
               onUpdate={handleTaskUpdate}
               onDelete={handleTaskDelete}
-              isSelected={selectedId == task.id}
-              onSelect={() => setSelectedId(task.id)}
+              isSelected={selectedIds.includes(task.id)} // Check if task is selected
+              onSelect={() => toggleSelectedId(task.id)} // Toggle selection
               animation={animation}
             />
           );
@@ -144,11 +154,13 @@ function CheckboxList({
       {input ? (
         <div className="fixed bottom-0 p-2 bg-white w-2/3 h-[46px]">
           <input
-            className={`w-full h-[30px] px-2 border-2 rounded-md ${invalidInput ? "bg-red-50" : "bg-gray-50"}`}
+            className={`w-full h-[30px] px-2 border-2 rounded-md ${
+              invalidInput ? "bg-red-50" : "bg-gray-50"
+            }`}
             type="text"
             placeholder="Add new task..."
             ref={elementToAnimate}
-            onClick={() => setSelectedId(null)}
+            onClick={() => setSelectedIds([])} // Clear selection on input click
             onKeyDownCapture={handleInputKeyPress}
           />
         </div>
