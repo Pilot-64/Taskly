@@ -135,7 +135,7 @@ function CheckboxList({
 
   return (
     <div>
-      <ul className="px-5" ref={parentOfAnimatedChildren}>
+      <ul className="px-5 pb-12" ref={parentOfAnimatedChildren}>
         {tasks.map((task: Tasks, index) => {
           if (maxTasks != null && index >= maxTasks) return null;
           return (
