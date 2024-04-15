@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { MdDeleteForever } from "react-icons/md";
+import { useAnimate } from "framer-motion";
 
 interface CheckboxProps {
   task: Tasks;
@@ -22,6 +23,39 @@ function Checkbox({
   animation
 }: CheckboxProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [editingTitle, setEditingTitle] = useState<boolean>(false);
+  const titleInput = useRef<HTMLInputElement>(null);
+  const [invalidInput, setInvalidInput] = useState<boolean>(false);
+  const [titleInputAnimationElement, animateTitleInput] = useAnimate();
+
+  const handleTitleInputKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key == "Enter" && !invalidInput) {
+      const inputValue = event.currentTarget.value.trim();
+      if (inputValue && inputValue.length >= 3 && inputValue.length <= 50) {
+        onUpdate({
+          ...task,
+          title: inputValue
+        });
+        if(titleInput.current)
+          titleInput.current.blur();
+      } else {
+        if (animation)
+          animateTitleInput(
+            titleInputAnimationElement.current,
+            {
+              x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0]
+            },
+            {
+              duration: 0.5
+            }
+          );
+        setInvalidInput(true);
+        setTimeout(() => setInvalidInput(false), 500);
+      }
+    }
+  };
 
   return (
     <li
@@ -74,12 +108,36 @@ function Checkbox({
           />
           <div className="bg-white text-black cursor-auto z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
             <div className="inline-flex items-center justify-between w-full p-1">
-              <h2 className="text-2xl w-1/2 line-clamp-1 relative">
-                {task.title}
-                <span className="hidden z-30 bg-gray-500 text-white text-center px-1 rounded-md absolute hover:visible">
+              {editingTitle ? (
+                <div ref={titleInputAnimationElement}>
+                  <input
+                    className={`text-2xl w-1/2 relative ${invalidInput ? "bg-red-50" : ""}`}
+                    type="text"
+                    placeholder="Title of Task"
+                    onKeyDownCapture={handleTitleInputKeyPress}
+                    onBlur={() => {
+                      setEditingTitle(false);
+                      setInvalidInput(false);
+                    }}
+                    ref={titleInput}
+                  />
+                </div>
+              ) : (
+                <h2
+                  className="text-2xl w-1/2 relative line-clamp-1"
+                  onClick={() => {
+                    setEditingTitle(true);
+                    setTimeout(() => {
+                      if (!titleInput.current) return;
+                      titleInput.current.value = task.title;
+                      titleInput.current.focus();
+                    }, 5);
+                  }}
+                >
                   {task.title}
-                </span>
-              </h2>
+                </h2>
+              )}
+
               <MdDeleteForever
                 className="w-6 h-6 cursor-pointer hover:fill-gray-600"
                 onClick={() => {
