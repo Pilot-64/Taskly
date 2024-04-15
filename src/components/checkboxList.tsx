@@ -91,8 +91,11 @@ function CheckboxList({
   //* Selection Handling
   const handleKeyDown = (event: KeyboardEvent) => {
     if (selectedIds.length == 0) return; // Check if anything is selected
-    window.Main.LogDebug(event.key);
     switch (event.key) {
+      case "Escape": {
+        setSelectedIds([]);
+        break;
+      }
       case "Enter": {
         selectedIds.forEach((selectedId) => {
           const taskToComplete = tasks.find((task) => task.id == selectedId);
@@ -101,7 +104,6 @@ function CheckboxList({
             handleTaskUpdate(taskToComplete);
           }
         });
-        setSelectedIds([]); // Clear selected ids after completion
         break;
       }
       case "Backspace": {
