@@ -1,4 +1,5 @@
 # TodoApp (WIP)
+Simple, modern and open-source To-Do app.
 
 ## To-Do
 

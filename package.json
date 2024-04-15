@@ -5,7 +5,14 @@
   "author": {
     "name": "Oliver Nederal"
   },
-  "description": "Todo App",
+  "contributors": [
+    {
+      "name": "MentoskaPraha",
+      "email": "contact+taskly@mentoskapraha.com",
+      "url": "https://www.mentoskapraha.com"
+    }
+  ],
+  "description": "Simple, modern and open-source To-Do app.",
   "keywords": [
     "vite",
     "react",
