@@ -17,6 +17,7 @@ function CheckboxList({
   maxTasks = null,
   setTaskNum = undefined
 }: CheckboxListProps) {
+  //* Variables
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]); // Modified to hold multiple selected ids
   const [parentOfAnimatedChildren, enableAnimations] = useAutoAnimate();
@@ -24,8 +25,10 @@ function CheckboxList({
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
   const [initialRender, setInitialRender] = useState<boolean>(true);
 
+  //* Animations
   enableAnimations(animation);
 
+  //* Task Handling
   useEffect(() => {
     if (initialRender) {
       window.Main.LoadTasks().then((loadedTasks) => {
@@ -43,53 +46,14 @@ function CheckboxList({
     }
   }, [tasks, setTaskNum]);
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (selectedIds.length === 0) return; // Check if anything is selected
-    window.Main.LogDebug(event.key);
-    switch (event.key) {
-      case "Enter": {
-        selectedIds.forEach((selectedId) => {
-          const taskToComplete = tasks.find((task) => task.id === selectedId);
-          if (taskToComplete) {
-            taskToComplete.completed = !taskToComplete.completed;
-            handleTaskUpdate(taskToComplete);
-          }
-        });
-        setSelectedIds([]); // Clear selected ids after completion
-        break;
-      }
-      case "Backspace": {
-        selectedIds.forEach((selectedId) => {
-          const taskToDelete = tasks.find((task) => task.id === selectedId);
-          if (taskToDelete) {
-            handleTaskDelete(taskToDelete);
-          }
-        });
-        setSelectedIds([]); // Clear selected ids after deletion
-        break;
-      }
-      default:
-        break;
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    window.Main.LogDebug("Added document keydown event listener.");
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      window.Main.LogDebug("Removed document keydown event listener.");
-    };
-  }, [handleKeyDown]);
-
   const handleTaskDelete = (deletedTask: Tasks) => {
-    const newTasks = tasks.filter((item) => !selectedIds.includes(item.id));
+    const newTasks = tasks.filter((item) => item.id != deletedTask.id);
     setTasks(newTasks);
   };
 
   const handleTaskUpdate = (updatedTask: Tasks) => {
     const newTasks = tasks.map((item) =>
-      selectedIds.includes(item.id) ? updatedTask : item
+      item.id == updatedTask.id ? updatedTask : item
     );
     setTasks(newTasks);
   };
@@ -97,7 +61,7 @@ function CheckboxList({
   const handleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (event.key === "Enter" && !invalidInput) {
+    if (event.key == "Enter" && !invalidInput) {
       const inputValue = event.currentTarget.value.trim();
       if (inputValue && inputValue.length >= 3 && inputValue.length <= 50) {
         const newTask: Tasks = {
@@ -124,15 +88,52 @@ function CheckboxList({
     }
   };
 
+  //* Selection Handling
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (selectedIds.length == 0) return; // Check if anything is selected
+    window.Main.LogDebug(event.key);
+    switch (event.key) {
+      case "Enter": {
+        selectedIds.forEach((selectedId) => {
+          const taskToComplete = tasks.find((task) => task.id == selectedId);
+          if (taskToComplete) {
+            taskToComplete.completed = !taskToComplete.completed;
+            handleTaskUpdate(taskToComplete);
+          }
+        });
+        setSelectedIds([]); // Clear selected ids after completion
+        break;
+      }
+      case "Backspace": {
+        const newTasks = tasks.filter((item) => !selectedIds.includes(item.id));
+        setTasks(newTasks);
+        setSelectedIds([]); // Clear selected ids after deletion
+        break;
+      }
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    window.Main.LogDebug("Added document keydown event listener.");
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      window.Main.LogDebug("Removed document keydown event listener.");
+    };
+  }, [handleKeyDown]);
+
   const toggleSelectedId = (id: string) => {
     setSelectedIds(
       (prevIds) =>
         prevIds.includes(id)
-          ? prevIds.filter((prevId) => prevId !== id) // Deselect if already selected
+          ? prevIds.filter((prevId) => prevId != id) // Deselect if already selected
           : [...prevIds, id] // Select if not already selected
     );
   };
 
+  //* UI Render
   return (
     <div>
       <ul className="px-5 pb-12" ref={parentOfAnimatedChildren}>
