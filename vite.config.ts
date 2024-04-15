@@ -6,7 +6,7 @@ const srcRoot = join(__dirname, "src");
 
 export default ({ command }: ConfigEnv): UserConfig => {
   // DEV
-  if (command === "serve") {
+  if (command == "serve") {
     return {
       root: srcRoot,
       base: "/",
@@ -22,7 +22,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
         rollupOptions: {}
       },
       server: {
-        port: process.env.PORT === undefined ? 3000 : +process.env.PORT
+        port: process.env.PORT == undefined ? 3000 : +process.env.PORT
       },
       optimizeDeps: {
         exclude: ["path"]
@@ -45,7 +45,7 @@ export default ({ command }: ConfigEnv): UserConfig => {
       rollupOptions: {}
     },
     server: {
-      port: process.env.PORT === undefined ? 3000 : +process.env.PORT
+      port: process.env.PORT == undefined ? 3000 : +process.env.PORT
     },
     optimizeDeps: {
       exclude: ["path"]
