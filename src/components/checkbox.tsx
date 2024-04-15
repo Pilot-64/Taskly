@@ -26,7 +26,7 @@ function Checkbox({
   return (
     <li
       className={`inline-flex items-center justify-between w-full rounded-lg cursor-pointer peer-checked:bg-gray-100
-        peer-checked:text-gray-100 ${isSelected ? "bg-blue-50" : "bg-white hover:text-gray-50 hover:bg-gray-50"} `}
+        peer-checked:text-gray-100 ${isSelected ? "bg-blue-50" : "bg-white hover:text-gray-50 hover:bg-gray-50"} transition-colors`}
     >
       <div
         onClick={onSelect}
