@@ -109,9 +109,9 @@ function Checkbox({
           <div className="bg-white text-black cursor-auto z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
             <div className="inline-flex items-center justify-between w-full p-1">
               {editingTitle ? (
-                <div ref={titleInputAnimationElement}>
+                <div className="w-3/4" ref={titleInputAnimationElement}>
                   <input
-                    className={`text-2xl w-1/2 relative ${invalidInput ? "bg-red-50" : ""}`}
+                    className={`text-2xl w-full relative ${invalidInput ? "bg-red-50" : ""}`}
                     type="text"
                     placeholder="Title of Task"
                     onKeyDownCapture={handleTitleInputKeyPress}
@@ -124,7 +124,7 @@ function Checkbox({
                 </div>
               ) : (
                 <h2
-                  className="text-2xl w-1/2 relative line-clamp-1"
+                  className="text-2xl w-3/4 relative line-clamp-1"
                   onClick={() => {
                     setEditingTitle(true);
                     setTimeout(() => {
