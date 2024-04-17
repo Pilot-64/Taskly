@@ -3,7 +3,7 @@ import React from "react";
 import { IoHome, IoSettingsSharp } from "react-icons/io5";
 import { FaClipboardList } from "react-icons/fa";
 import { RiFilePaper2Fill } from "react-icons/ri";
-import { Tabs } from "../App";
+import { Tabs } from "../../App";
 
 interface sideBarProps {
   onTabSwitch: (newTab: string) => void;

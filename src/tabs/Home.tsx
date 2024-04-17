@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
 
-import CheckboxList from "../components/checkboxList";
+import CheckboxList from "../components/checkboxes/checkboxList";
 
 function Home() {
   return (

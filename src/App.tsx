@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 
-import SideBar from "./components/sideBar";
+import SideBar from "./components/misc/sideBar";
 import Home from "./tabs/Home";
 import Tasks from "./tabs/Tasks";
 import Notes from "./tabs/Notes";

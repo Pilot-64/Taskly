@@ -2,7 +2,7 @@
 import React from "react";
 import { useState } from "react";
 
-import CheckboxList from "../components/checkboxList";
+import CheckboxList from "../components/checkboxes/checkboxList";
 
 function Tasks() {
   const [numTasks, setNumTasks] = useState<number>(0);
