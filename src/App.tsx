@@ -35,6 +35,8 @@ function App() {
 
   const handleTabSwitch = (newTab: string) => setTab(newTab);
 
+  document.documentElement.setAttribute("data-color-mode", "light");
+
   return (
     <div className="font-taskly min-h-screen grid grid-cols-3 antialiased">
       <SideBar onTabSwitch={handleTabSwitch} />

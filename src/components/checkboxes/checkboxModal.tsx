@@ -1,14 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdCheckmarkCircle } from "react-icons/io";
+import { IoCloseCircle } from "react-icons/io5";
 import { useAnimate } from "framer-motion";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 
-interface CheckboxProps {
+interface CheckboxModalProps {
   task: Tasks;
   onClose: () => void;
   onUpdate: (updatedTask: Tasks) => void;
@@ -22,7 +23,7 @@ function CheckboxModal({
   onUpdate,
   onDelete,
   animation
-}: CheckboxProps) {
+}: CheckboxModalProps) {
   //* Title editing
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
   const titleInput = useRef<HTMLInputElement>(null);
@@ -38,17 +39,16 @@ function CheckboxModal({
     }, 2);
   };
 
-  const handleTitleInputKeyPress = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (event.key == "Enter" && !invalidInput) {
-      const inputValue = event.currentTarget.value.trim();
+  const handleTitleSubmit = () => {
+    if(!titleInput.current) return;
+    const inputValue = titleInput.current.value.trim();
       if (inputValue && inputValue.length >= 3 && inputValue.length <= 50) {
         onUpdate({
           ...task,
           title: inputValue
         });
-        if (titleInput.current) titleInput.current.blur();
+        setEditingTitle(false);
+        setInvalidInput(false);
       } else {
         if (animation)
           animateTitleInput(
@@ -63,7 +63,25 @@ function CheckboxModal({
         setInvalidInput(true);
         setTimeout(() => setInvalidInput(false), 500);
       }
-    }
+  }
+
+  const handleTitleInputKeyPress = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    switch(event.key){
+      case "Enter": {
+        if(invalidInput) break;
+        handleTitleSubmit();
+        break;
+      }
+      case "Escape": {
+        setEditingTitle(false);
+        setInvalidInput(false);
+        break;
+      }
+      default:
+        break;
+    };
   };
 
   //* Description Editing
@@ -81,18 +99,14 @@ function CheckboxModal({
             <div className="w-3/4 inline-flex items-center">
               <div ref={titleInputAnimationElement}>
                 <input
-                  className={`text-2xl w-full relative ${invalidInput ? "bg-red-50" : ""}`}
+                  className={`text-2xl w-full relative border-orange-300 rounded-md border-2 ${invalidInput ? "bg-red-50" : ""}`}
                   type="text"
                   placeholder="Title of Task"
                   onKeyDownCapture={handleTitleInputKeyPress}
                   ref={titleInput}
-                  onBlur={() => {
-                    setEditingTitle(false);
-                    setInvalidInput(false);
-                  }}
                 />
               </div>
-              <IoMdCheckmarkCircle className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600" />
+              <IoMdCheckmarkCircle onClick={handleTitleSubmit} className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600" />
             </div>
           ) : (
             <div className="w-3/4 inline-flex items-center">
@@ -115,6 +129,10 @@ function CheckboxModal({
                 onClose();
                 setTimeout(onDelete, 50);
               }}
+            />
+            <IoCloseCircle 
+              className="w-6 h-6 cursor-pointer hover:fill-gray-600"
+              onClick={onClose}
             />
           </div>
         </div>
