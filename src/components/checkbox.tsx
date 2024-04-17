@@ -2,8 +2,12 @@
 import React from "react";
 import { useState, useRef } from "react";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
+import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 import { useAnimate } from "framer-motion";
+import MarkdownEditor from "@uiw/react-markdown-editor";
+import MarkdownPreview from "@uiw/react-markdown-preview";
 
 interface CheckboxProps {
   task: Tasks;
@@ -23,10 +27,23 @@ function Checkbox({
   animation
 }: CheckboxProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  //* Title editing
   const [editingTitle, setEditingTitle] = useState<boolean>(false);
   const titleInput = useRef<HTMLInputElement>(null);
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
   const [titleInputAnimationElement, animateTitleInput] = useAnimate();
+  const [clickedTitleConfirm, setClickedTitleConfirm] =
+    useState<boolean>(false);
+
+  const handleTitleClick = () => {
+    setEditingTitle(true);
+    setTimeout(() => {
+      if (!titleInput.current) return;
+      titleInput.current.value = task.title;
+      titleInput.current.focus();
+    }, 2);
+  };
 
   const handleTitleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
@@ -38,8 +55,7 @@ function Checkbox({
           ...task,
           title: inputValue
         });
-        if(titleInput.current)
-          titleInput.current.blur();
+        if (titleInput.current) titleInput.current.blur();
       } else {
         if (animation)
           animateTitleInput(
@@ -56,6 +72,9 @@ function Checkbox({
       }
     }
   };
+
+  //* Description Editing
+  const [editingDescription, setEditingDescription] = useState<boolean>(false);
 
   return (
     <li
@@ -109,44 +128,55 @@ function Checkbox({
           <div className="bg-white text-black cursor-auto z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2">
             <div className="inline-flex items-center justify-between w-full p-1">
               {editingTitle ? (
-                <div className="w-3/4" ref={titleInputAnimationElement}>
-                  <input
-                    className={`text-2xl w-full relative ${invalidInput ? "bg-red-50" : ""}`}
-                    type="text"
-                    placeholder="Title of Task"
-                    onKeyDownCapture={handleTitleInputKeyPress}
-                    onBlur={() => {
-                      setEditingTitle(false);
-                      setInvalidInput(false);
-                    }}
-                    ref={titleInput}
-                  />
+                <div className="w-3/4 inline-flex items-center">
+                  <div ref={titleInputAnimationElement}>
+                    <input
+                      className={`text-2xl w-full relative ${invalidInput ? "bg-red-50" : ""}`}
+                      type="text"
+                      placeholder="Title of Task"
+                      onKeyDownCapture={handleTitleInputKeyPress}
+                      ref={titleInput}
+                      onBlur={() => {
+                        setEditingTitle(false);
+                        setInvalidInput(false);
+                      }}
+                    />
+                  </div>
+                  <IoMdCheckmarkCircle className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600" />
                 </div>
               ) : (
-                <h2
-                  className="text-2xl w-3/4 relative line-clamp-1"
-                  onClick={() => {
-                    setEditingTitle(true);
-                    setTimeout(() => {
-                      if (!titleInput.current) return;
-                      titleInput.current.value = task.title;
-                      titleInput.current.focus();
-                    }, 5);
-                  }}
-                >
-                  {task.title}
-                </h2>
+                <div className="w-3/4 inline-flex items-center">
+                  <h2
+                    className="text-2xl relative line-clamp-1"
+                    onClick={handleTitleClick}
+                  >
+                    {task.title}
+                  </h2>
+                  <FaEdit
+                    className="w-4 h-4 ml-2 cursor-pointer hover:fill-gray-600"
+                    onClick={handleTitleClick}
+                  />
+                </div>
               )}
-
-              <MdDeleteForever
-                className="w-6 h-6 cursor-pointer hover:fill-gray-600"
-                onClick={() => {
-                  setShowModal(false);
-                  setTimeout(() => onDelete(task), 50);
-                }}
-              />
+              <div className="inline-flex items-center justify-between">
+                <MdDeleteForever
+                  className="w-6 h-6 cursor-pointer hover:fill-gray-600"
+                  onClick={() => {
+                    setShowModal(false);
+                    setTimeout(() => onDelete(task), 50);
+                  }}
+                />
+              </div>
             </div>
             <hr className="w-full h-px bg-gray-300" />
+            <div className="p-1">
+              <div className="inline-flex items-center justify-between w-full">
+                <h3 className="mt-2 text-lg">Description</h3>
+                <FaEdit className="mt-1 w-4 h-4 cursor-pointer hover:fill-gray-600" />
+              </div>
+              <hr className="w-full h-px bg-gray-300 mt-0 mb-2" />
+              {editingDescription ? <MarkdownEditor /> : <MarkdownPreview />}
+            </div>
           </div>
         </div>
       ) : null}

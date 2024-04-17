@@ -10,6 +10,9 @@ declare global {
     id: string;
     title: string;
     completed: boolean;
+    description: string;
+    doDate: Date | null;
+    dueDate: Date | null;
   }
 }
 

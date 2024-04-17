@@ -67,7 +67,10 @@ function CheckboxList({
         const newTask: Tasks = {
           id: crypto.randomUUID(),
           title: inputValue,
-          completed: false
+          completed: false,
+          description: "",
+          dueDate: null,
+          doDate: null
         };
         setTasks((prevTasks) => [...prevTasks, newTask]);
         event.currentTarget.value = "";
