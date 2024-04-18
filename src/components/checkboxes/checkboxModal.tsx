@@ -40,37 +40,37 @@ function CheckboxModal({
   };
 
   const handleTitleSubmit = () => {
-    if(!titleInput.current) return;
+    if (!titleInput.current) return;
     const inputValue = titleInput.current.value.trim();
-      if (inputValue && inputValue.length >= 3 && inputValue.length <= 50) {
-        onUpdate({
-          ...task,
-          title: inputValue
-        });
-        setEditingTitle(false);
-        setInvalidInput(false);
-      } else {
-        if (animation)
-          animateTitleInput(
-            titleInputAnimationElement.current,
-            {
-              x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0]
-            },
-            {
-              duration: 0.5
-            }
-          );
-        setInvalidInput(true);
-        setTimeout(() => setInvalidInput(false), 500);
-      }
-  }
+    if (inputValue && inputValue.length >= 3 && inputValue.length <= 50) {
+      onUpdate({
+        ...task,
+        title: inputValue
+      });
+      setEditingTitle(false);
+      setInvalidInput(false);
+    } else {
+      if (animation)
+        animateTitleInput(
+          titleInputAnimationElement.current,
+          {
+            x: [0, -5, 5, -5, 5, -5, 5, -5, 5, -5, 0]
+          },
+          {
+            duration: 0.5
+          }
+        );
+      setInvalidInput(true);
+      setTimeout(() => setInvalidInput(false), 500);
+    }
+  };
 
   const handleTitleInputKeyPress = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    switch(event.key){
+    switch (event.key) {
       case "Enter": {
-        if(invalidInput) break;
+        if (invalidInput) break;
         handleTitleSubmit();
         break;
       }
@@ -81,11 +81,14 @@ function CheckboxModal({
       }
       default:
         break;
-    };
+    }
   };
 
   //* Description Editing
   const [editingDescription, setEditingDescription] = useState<boolean>(false);
+  const [descriptionInputValue, setDescriptionInputValue] = useState<string>(
+    task.description
+  );
 
   return (
     <div className="grid place-content-center w-screen h-screen fixed top-0 left-0 z-10">
@@ -106,7 +109,10 @@ function CheckboxModal({
                   ref={titleInput}
                 />
               </div>
-              <IoMdCheckmarkCircle onClick={handleTitleSubmit} className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600" />
+              <IoMdCheckmarkCircle
+                onClick={handleTitleSubmit}
+                className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600"
+              />
             </div>
           ) : (
             <div className="w-3/4 inline-flex items-center">
@@ -130,7 +136,7 @@ function CheckboxModal({
                 setTimeout(onDelete, 50);
               }}
             />
-            <IoCloseCircle 
+            <IoCloseCircle
               className="w-6 h-6 cursor-pointer hover:fill-gray-600"
               onClick={onClose}
             />
@@ -140,10 +146,46 @@ function CheckboxModal({
         <div className="p-1">
           <div className="inline-flex items-center justify-between w-full">
             <h3 className="mt-2 text-lg">Description</h3>
-            <FaEdit className="mt-1 w-4 h-4 cursor-pointer hover:fill-gray-600" />
+            {editingDescription ? (
+              <IoMdCheckmarkCircle
+                className="mt-2 w-5 h-5 cursor-pointer hover:fill-gray-600"
+                onClick={() => {
+                  onUpdate({
+                    ...task,
+                    description: descriptionInputValue
+                  });
+                  setEditingDescription(false);
+                }}
+              />
+            ) : (
+              <FaEdit
+                className="mt-1 w-4 h-4 cursor-pointer hover:fill-gray-600"
+                onClick={() => setEditingDescription(true)}
+              />
+            )}
           </div>
           <hr className="w-full h-px bg-gray-300 mt-0 mb-2" />
-          {editingDescription ? <MarkdownEditor /> : <MarkdownPreview />}
+          {editingDescription ? (
+            <MarkdownEditor
+              value={descriptionInputValue}
+              onChange={(value) => setDescriptionInputValue(value)}
+            />
+          ) : (
+            <MarkdownPreview
+              source={task.description}
+              rehypeRewrite={(node, _index, parent) => {
+                if (
+                  node.type == "element" &&
+                  node.tagName == "a" &&
+                  parent &&
+                  parent.type == "element" &&
+                  /^h(1|2|3|4|5|6)/.test(parent.tagName)
+                ) {
+                  parent.children = parent.children.slice(1);
+                }
+              }}
+            />
+          )}
         </div>
       </div>
     </div>
