@@ -11,6 +11,7 @@ interface CheckboxProps {
   isSelected: boolean;
   onSelect: () => void;
   animation: boolean;
+  defaultShowModalState: boolean;
 }
 
 function Checkbox({
@@ -19,9 +20,10 @@ function Checkbox({
   onDelete,
   isSelected,
   onSelect,
-  animation
+  animation,
+  defaultShowModalState
 }: CheckboxProps) {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(defaultShowModalState);
 
   return (
     <li

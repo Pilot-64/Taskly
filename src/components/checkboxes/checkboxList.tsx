@@ -151,6 +151,7 @@ function CheckboxList({
               isSelected={selectedIds.includes(task.id)} // Check if task is selected
               onSelect={() => toggleSelectedId(task.id)} // Toggle selection
               animation={animation}
+              defaultShowModalState={false}
             />
           );
         })}
