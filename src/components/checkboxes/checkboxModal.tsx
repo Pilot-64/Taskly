@@ -8,6 +8,7 @@ import { IoCloseCircle } from "react-icons/io5";
 import { useAnimate } from "framer-motion";
 import MarkdownEditor from "@uiw/react-markdown-editor";
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import { Tooltip } from "react-tooltip";
 import dayjs from "dayjs";
 
 interface CheckboxModalProps {
@@ -102,6 +103,12 @@ function CheckboxModal({
         className="w-screen h-screen fixed top-0 left-0 z-10 bg-gray-300 opacity-70"
         onClick={onClose}
       />
+      <Tooltip
+        id={`${task.id}-tooltip`}
+        className="z-30"
+        offset={5}
+        style={{ padding: "0.25rem" }}
+      />
       <div className="bg-white text-black cursor-auto z-20 w-screen-3/4 h-screen-3/4 rounded-md shadow-md p-2 pl-6 overflow-y-scroll">
         <div className="inline-flex items-center justify-between w-full p-1">
           {editingTitle ? (
@@ -118,6 +125,9 @@ function CheckboxModal({
               <IoMdCheckmarkCircle
                 onClick={handleTitleSubmit}
                 className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600"
+                data-tooltip-id={`${task.id}-tooltip`}
+                data-tooltip-content="Save Changes"
+                data-tooltip-place="bottom"
               />
               <IoCloseCircle
                 className="w-5 h-5 cursor-pointer hover:fill-gray-600"
@@ -125,6 +135,9 @@ function CheckboxModal({
                   setEditingTitle(false);
                   setInvalidInput(false);
                 }}
+                data-tooltip-id={`${task.id}-tooltip`}
+                data-tooltip-content="Discard Changes"
+                data-tooltip-place="bottom"
               />
             </div>
           ) : (
@@ -140,6 +153,9 @@ function CheckboxModal({
                     titleInput.current.focus();
                   }, 2);
                 }}
+                data-tooltip-id={`${task.id}-tooltip`}
+                data-tooltip-content="Edit Title"
+                data-tooltip-place="bottom"
               />
             </div>
           )}
@@ -150,10 +166,16 @@ function CheckboxModal({
                 onClose();
                 setTimeout(onDelete, 50);
               }}
+              data-tooltip-id={`${task.id}-tooltip`}
+              data-tooltip-content="Delete Task"
+              data-tooltip-place="bottom"
             />
             <IoCloseCircle
               className="w-6 h-6 cursor-pointer hover:fill-gray-600"
               onClick={onClose}
+              data-tooltip-id={`${task.id}-tooltip`}
+              data-tooltip-content="Close"
+              data-tooltip-place="bottom"
             />
           </div>
         </div>
@@ -188,10 +210,16 @@ function CheckboxModal({
                         });
                       }}
                       className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600"
+                      data-tooltip-id={`${task.id}-tooltip`}
+                      data-tooltip-content="Save Changes"
+                      data-tooltip-place="top"
                     />
                     <IoCloseCircle
                       className="w-5 h-5 cursor-pointer hover:fill-gray-600"
                       onClick={() => setEditingDueDate(false)}
+                      data-tooltip-id={`${task.id}-tooltip`}
+                      data-tooltip-content="Discard Changes"
+                      data-tooltip-place="top"
                     />
                   </div>
                 ) : (
@@ -201,6 +229,9 @@ function CheckboxModal({
                       setEditingDueDate(true);
                       if (dueDateInput.current) dueDateInput.current.focus();
                     }}
+                    data-tooltip-id={`${task.id}-tooltip`}
+                    data-tooltip-content="Edit Due Date"
+                    data-tooltip-place="top"
                   />
                 )}
               </div>
@@ -226,10 +257,16 @@ function CheckboxModal({
                         });
                       }}
                       className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600"
+                      data-tooltip-id={`${task.id}-tooltip`}
+                      data-tooltip-content="Save Changes"
+                      data-tooltip-place="top"
                     />
                     <IoCloseCircle
                       className="w-5 h-5 cursor-pointer hover:fill-gray-600"
                       onClick={() => setEditingDoDate(false)}
+                      data-tooltip-id={`${task.id}-tooltip`}
+                      data-tooltip-content="Discard Changes"
+                      data-tooltip-place="top"
                     />
                   </div>
                 ) : (
@@ -239,6 +276,9 @@ function CheckboxModal({
                       setEditingDoDate(true);
                       if (doDateInput.current) doDateInput.current.focus();
                     }}
+                    data-tooltip-id={`${task.id}-tooltip`}
+                    data-tooltip-content="Edit Do Date"
+                    data-tooltip-place="top"
                   />
                 )}
               </div>
@@ -267,6 +307,9 @@ function CheckboxModal({
                         description: descriptionInputValue
                       });
                     }}
+                    data-tooltip-id={`${task.id}-tooltip`}
+                    data-tooltip-content="Save Changes"
+                    data-tooltip-place="top"
                   />
                   <IoCloseCircle
                     className="mt-2 w-5 h-5 cursor-pointer hover:fill-gray-600"
@@ -276,12 +319,18 @@ function CheckboxModal({
                         task.description != null ? task.description : ""
                       );
                     }}
+                    data-tooltip-id={`${task.id}-tooltip`}
+                    data-tooltip-content="Discard Changes"
+                    data-tooltip-place="top"
                   />
                 </div>
               ) : (
                 <FaEdit
                   className="mt-1 w-4 h-4 cursor-pointer hover:fill-gray-600"
                   onClick={() => setEditingDescription(true)}
+                  data-tooltip-id={`${task.id}-tooltip`}
+                  data-tooltip-content="Edit Description"
+                  data-tooltip-place="top"
                 />
               )}
             </div>
