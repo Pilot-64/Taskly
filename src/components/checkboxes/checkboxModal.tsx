@@ -184,7 +184,7 @@ function CheckboxModal({
                         setEditingDueDate(false);
                         onUpdate({
                           ...task,
-                          dueDate: dayjs(dueDateInputValue).toDate()
+                          dueDate: new Date(dueDateInputValue)
                         });
                       }}
                       className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600"
@@ -222,7 +222,7 @@ function CheckboxModal({
                         setEditingDoDate(false);
                         onUpdate({
                           ...task,
-                          doDate: dayjs(doDateInputValue).toDate()
+                          doDate: new Date(doDateInputValue)
                         });
                       }}
                       className="w-5 h-5 ml-2 cursor-pointer hover:fill-gray-600"
